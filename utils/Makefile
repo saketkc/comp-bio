@@ -1,5 +1,5 @@
-SOURCES = global_alignment.cpp
-EXECUTABLES = global_alignment
+SOURCES = fasta_reader.cpp
+EXECUTABLES = fasta_reader
 # Replace suffix using macro
 OBJS = $(SOURCES:.cpp=.o)
 CXX = g++
