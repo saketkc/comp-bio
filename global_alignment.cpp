@@ -25,9 +25,9 @@ int main(int argc, char **argv){
     int m = fasta_sequences[1].seqString.length();
 
     ScoringInfo R[n][m];
-    int MATCH = 1;
-    int MISMATCH = -22;
-    int INDEL = 0;
+    int MATCH = 2;
+    int MISMATCH = -1;
+    int INDEL = -2;
     std::cout << "n: " << n << std::endl;
     for(int i=0; i<n; i++){
         R[i][0].score = INDEL*i;
@@ -49,7 +49,6 @@ int main(int argc, char **argv){
                 match += MISMATCH;
             int indel_u = R[i-1][j].score+INDEL;
             int indel_v = R[i][j-1].score+INDEL;
-            cout << "m: " << match << " u: " << indel_u << " v: " << indel_v << std::endl;
             if (match>indel_u && match > indel_v){
                 R[i][j].score = match;
                 R[i][j].type = 'A';
