@@ -1,47 +1,69 @@
 #include "utils/fasta_reader.hpp"
+#include "global_alignment.hpp"
+
 using std::cout;
 
-
-class ScoringInfo{
-    public:
-        int score;
-        //MATCH = A
-        //MISMATCH = M
-        //INDEL = I
-        char type;
-};
+void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, int &pINDEL){
+    CSimpleIni ini(true, true, true);
+    ini.SetUnicode();
+    std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
+    if (ini.LoadFile(config_file) < 0){
+        std::cerr << "Error loading file. Setting default values\n";
+    }
+    else {
+        pMATCH = atoi(ini.GetValue("GlobalAlignment", "match", "288"));
+        pMISMATCH = atoi(ini.GetValue("GlobalAlignment", "mismatch", "-1"));
+        pINDEL = atoi(ini.GetValue("GlobalAlignment", "indel", "-1"));
+    }
+}
 
 
 
 int main(int argc, char **argv){
+    int MATCH = 2;
+    int MISMATCH = -1;
+    int INDEL = -2;
+
+    int seq1_length, seq2_length;
+
     std::vector<Fasta> fasta_sequences;
+
+    if(argc < 2){
+        std::cerr << std::endl << "Usage: global_alignment <fasta-file> [conig_file]\
+            \nNote: Only first two sequences are read for alignment \n\n";
+        exit(EXIT_FAILURE);
+    }
+    if(argc>=3){
+        std::cout<< "loading file";
+        char *config_file = argv[1];
+        readConfigFile(config_file, MATCH, MISMATCH, INDEL);
+        std::cout << "match: " << MATCH << " MISMATCH: " << MISMATCH << " INDEL: " << INDEL << std::endl;
+
+    }
     fasta_sequences = FastaReader(argv[1]);
 
     //We assume only two sequences for now
     fasta_sequences[0].set_seqString("_"+fasta_sequences[0].get_seqString());
     fasta_sequences[1].set_seqString("_"+fasta_sequences[1].get_seqString());
 
-    int n = fasta_sequences[0].seqString.length();
-    int m = fasta_sequences[1].seqString.length();
+    seq1_length = fasta_sequences[0].seqString.length();
+    seq2_length = fasta_sequences[1].seqString.length();
 
-    ScoringInfo R[n][m];
-    int MATCH = 2;
-    int MISMATCH = -1;
-    int INDEL = -2;
-    std::cout << "n: " << n << std::endl;
-    for(int i=0; i<n; i++){
+    ScoringInfo R[seq1_length][seq2_length];
+
+    for(int i=0; i<seq1_length; i++){
         R[i][0].score = INDEL*i;
         R[i][0].type = 'I';
     }
 
-    for(int i=0; i<m; i++){
+    for(int i=0; i<seq2_length; i++){
         R[0][i].score = INDEL*i;
         R[0][i].type = 'I';
 
     }
 
-    for (int i=1; i<n; i++){
-        for(int j=1; j<m; j++){
+    for (int i=1; i<seq1_length; i++){
+        for(int j=1; j<seq2_length; j++){
             int match = R[i-1][j-1].score;
             if (fasta_sequences[0].seqString[i]==fasta_sequences[1].seqString[j])
                 match += MATCH;
@@ -66,13 +88,13 @@ int main(int argc, char **argv){
 
     }
 
-    for (int i =0; i<n; i++){
-        for (int j=0; j<m; j++){
+    for (int i =0; i<seq1_length; i++){
+        for (int j=0; j<seq2_length; j++){
             std::cout << R[i][j].score << " ";
         }
         std::cout << std::endl;
     }
-    std::cout << "Score: " << R[n-1][m-1].score << std::endl;
+    std::cout << "Score: " << R[seq1_length-1][seq2_length-1].score << std::endl;
 
 
 
