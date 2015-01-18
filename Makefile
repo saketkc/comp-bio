@@ -9,9 +9,6 @@ DEBUG = -g
 
 # Turn on warnings
 CXXFLAGS = -Wall $(DEBUG)
-LFLAGS = -Wall $(DEBUG)
-
-
 
 
 all: $(EXECUTABLES)
@@ -22,5 +19,5 @@ all: $(EXECUTABLES)
 $(EXECUTABLES): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
-clean: 
+clean:
 	@-rm -f *.o *~
