@@ -1,5 +1,8 @@
 SOURCES = global_alignment.cpp
 EXECUTABLES = global_alignment
+INCLUDES = ../include
+INCLUDEARGS = $(addprefix -I,$(INCLUDES))
+
 # Replace suffix using macro
 OBJS = $(SOURCES:.cpp=.o)
 CXX = g++
@@ -13,8 +16,10 @@ CXXFLAGS = -Wall $(DEBUG)
 
 all: $(EXECUTABLES)
 
+## $<: Name of prerequisite (*.cpp)
+## $@: Name of target (*.op)
 %.o: %.cpp %.hpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) -c $< -o $@  $(INCLUDEARGS)
 
 $(EXECUTABLES): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
