@@ -11,9 +11,9 @@ void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, 
         std::cerr << "Error loading file. Setting default values\n";
     }
     else {
-        pMATCH = atoi(ini.GetValue("GlobalAlignment", "match", "288"));
+        pMATCH = atoi(ini.GetValue("GlobalAlignment", "match", "2"));
         pMISMATCH = atoi(ini.GetValue("GlobalAlignment", "mismatch", "-1"));
-        pINDEL = atoi(ini.GetValue("GlobalAlignment", "indel", "-1"));
+        pINDEL = atoi(ini.GetValue("GlobalAlignment", "indel", "-2"));
     }
 }
 
