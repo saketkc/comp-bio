@@ -11,7 +11,7 @@ CXX = g++
 DEBUG = -g
 
 # Turn on warnings
-CXXFLAGS = -Wall $(DEBUG)
+CXXFLAGS = -Wall -O3 $(DEBUG)
 
 
 all: $(EXECUTABLES)
