@@ -36,16 +36,6 @@ class GlobalAlignmentTest : public ::testing::Test {
 };
 
 // Tests that the Foo::Bar() method does Abc.
-TEST_F(GlobalAlignmentTest, MethodBarDoesAbc) {
-  const string input_filepath = "this/package/testdata/myinputfile.dat";
-  Foo f;
-  EXPECT_EQ(0, f.Bar(input_filepath, output_filepath));
-}
-
-// Tests that Foo does Xyz.
-TEST_F(GlobalAlignmentTest, DoesXyz) {
-  // Exercises the Xyz feature of Foo.
-}
 
 }  // namespace
 

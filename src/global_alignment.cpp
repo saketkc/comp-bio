@@ -1,4 +1,4 @@
-#include "utils/fasta_reader.hpp"
+#include "fasta_reader.hpp"
 #include "global_alignment.hpp"
 
 using std::cout;

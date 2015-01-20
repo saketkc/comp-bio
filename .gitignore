@@ -27,3 +27,4 @@
 *.out
 *.app
 global_alignment
+global_alignment_test
