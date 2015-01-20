@@ -5,9 +5,6 @@ class ScoringInfo{
     public:
         //Let the score and type be public to avoid unecessary get, set methods
         int score;
-        //MATCH = A
-        //MISMATCH = M
-        //INDEL = I
         char type;
 };
 
@@ -23,31 +20,53 @@ class ScoringMatrix{
         }
     }
     public:
-        ScoringMatrix(int rows, int columns, int INDEL);
+        ScoringMatrix(int rows, int columns);
         void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
-        ScoringInfo getMatrixEntry(int i, int j);
+        void initializeIndelPenalties(int INDEL);
+        const int  getRowSize() const;
+        const int  getColumnSize() const;
+        const ScoringInfo getMatrixEntry(int i, int j) const;
         ~ScoringMatrix();
 
 };
 
 
-ScoringMatrix::ScoringMatrix(int rows, int columns, int INDEL) :rows(rows), columns(columns){
+ScoringMatrix::ScoringMatrix(int rows, int columns) :rows(rows), columns(columns){
     initMatrix();
     for (int i=0; i<rows; i++){
         for (int j=0; j<columns; j++){
             R[i][j].score = 0;
             if (i==0){
-                R[i][j].score = j*INDEL;
+                //Deletion in Seq1
                 R[i][j].type = '1';
             }
             if (j==0){
-                R[i][j].score = i*INDEL;
+                //Deletion in Seq2
                 R[i][j].type = '2';
             }
         }
     }
 }
-ScoringInfo ScoringMatrix::getMatrixEntry(int i, int j){
+
+void ScoringMatrix::initializeIndelPenalties(int INDEL){
+    for(int i=0; i<rows; i++){
+        R[i][0].score = i*INDEL;
+    }
+
+    for(int i=0; i<columns; i++){
+        R[0][i].score = i*INDEL;
+    }
+}
+
+const int ScoringMatrix::getColumnSize() const{
+    return columns;
+}
+
+const int ScoringMatrix::getRowSize() const{
+    return rows;
+}
+
+const ScoringInfo ScoringMatrix::getMatrixEntry(int i, int j) const{
     return R[i][j];
 }
 void ScoringMatrix::optimize(int i, int j, int match_mismatch_score, int del_seq2, int del_seq1){
