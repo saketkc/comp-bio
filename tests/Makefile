@@ -1,12 +1,11 @@
 SOURCES = global_alignment_test.cpp
 EXECUTABLES = global_alignment_test
-INCLUDES = ../include/ ../utils/
+INCLUDES = ../include/cpptest ../utils/ ../src/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 
-//NCPPFLAGS += -isystem $
 
 # Flags passed to the C++ compiler.
-CXXFLAGS += -g -Wall -Wextra -pthread
+CXXFLAGS += -g -Wall
 # Replace suffix using macro
 OBJS = $(SOURCES:.cpp=.o)
 CXX = g++
