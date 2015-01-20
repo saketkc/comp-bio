@@ -1,5 +1,9 @@
 ## Algorithms for Computational Biology
 
+### Build Status
+
+[![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
+
 Currently implemented:
 
 - [Global Alignment](docs/GlobalAlignment.md) 
