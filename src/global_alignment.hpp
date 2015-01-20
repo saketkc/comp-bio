@@ -105,7 +105,7 @@ ScoringMatrix::~ScoringMatrix(){
 void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, int &pINDEL){
     CSimpleIni ini(true, true, true);
     ini.SetUnicode();
-    std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
+    //std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
     if (ini.LoadFile(config_file) < 0){
         std::cerr << "Error loading file. Setting default values\n";
     }
@@ -189,13 +189,6 @@ void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISM
 ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2) {
 
 
-    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
-    std::cout << std::endl << "Seq1: " << seq1 << std::endl;
-    std::cout << "Seq2: " << seq2 << std::endl;
-
-    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
-    std::cout << std::endl << "Seq1 Length: " << seq1.length() << std::endl;
-    std::cout <<  "Seq2 Length: " << seq2.length() << std::endl;
 
 
     //We assume only two sequences for now

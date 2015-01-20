@@ -35,6 +35,14 @@ int main(int argc, char **argv){
     int score = getOptimalScore(SM);
 
     std::cout << std::endl <<  "--------------------------------------------" << std::endl;
+    std::cout << std::endl << "Seq1: " << seq1 << std::endl;
+    std::cout << "Seq2: " << seq2 << std::endl;
+
+    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
+    std::cout << std::endl << "Seq1 Length: " << seq1.length() << std::endl;
+    std::cout <<  "Seq2 Length: " << seq2.length() << std::endl;
+
+    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
     std::cout << std::endl << seqOutput[0] << std::endl;
     std::cout << seqOutput[1] << std::endl;
 
