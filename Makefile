@@ -7,6 +7,9 @@ clean:
 	@make -C src ROOT=$(ROOT) clean
 	@make -C tests ROOT=$(ROOT) clean
 
+install:
+	@make -C src ROOT=$(ROOT) OPT=1 install
+
 test:
 	@make -C tests ROOT=$(ROOT) OPT=1
 .PHONY: clean
