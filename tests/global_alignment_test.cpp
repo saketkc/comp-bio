@@ -4,9 +4,8 @@
 #include "scoring_matrix.cpp"
 
 class GlobalAlignmentTestFixture {
-    private:
-        static char input_file[];
     public:
+        static char input_file[];
         int sequenceProcessor(){
             int MATCH = 2;
             int MISMATCH = -1;
@@ -26,16 +25,12 @@ class GlobalAlignmentTestFixture {
             return score;
     }
 };
-char GlobalAlignmentTestFixture::input_file[] = "../tests/data/test.fasta";
-TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score 3", "[create]" ) {
-        REQUIRE( sequenceProcessor() == 3 );
-}
 
 //This fasta was created by deleting certain obvious lines from two copied sequences
 //Seq1 length = 2210
 //Seq2 length = 2175
 //Since all are a perfect match: Expected Score: (2210)*2 +(2210-2175)*-2*2=4280
-GlobalAlignmentTestFixture::file[]= "../tests/data/align-1000bp.fasta";
+char GlobalAlignmentTestFixture::input_file[] = "./data/align-1000bp-deletions.fasta";
 TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score deletions", "[create]" ) {
         REQUIRE( sequenceProcessor() == 4280 );
 }

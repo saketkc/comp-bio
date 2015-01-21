@@ -1,15 +1,36 @@
 ## Algorithms for Computational Biology
 
-### Build Status [![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
+## Build Status [![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
 
-Currently implemented:
+## Implemented Algorithms:
 
-- [Global Alignment](docs/GlobalAlignment.md) 
+- [Global Alignment](docs/GlobalAlignment.md)
 
 
+## How to run?
+```
+git clone git@gitub.com:saketkc/comp-bio.git
+cd comp-bio
+make
+make test
+make install
 
+./bin/global_alignment tests/data/align-1000bp-deletions.fasta
+```
+
+## Running tests
+We use [Catch](https://github.com/philsquared/Catch) for running unit test cases.
+```
+make test
+cd tests
+./global_alignment_test 
+
+===============================================================================
+All tests passed (1 assertion in 1 test case)
+
+
+```
 ## Third Party Libraries
-
 
 |Library   	| What for?   	| License   	|
 |---	|---	|---	|
