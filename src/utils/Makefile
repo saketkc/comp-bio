@@ -1,4 +1,4 @@
-SOURCES = fasta_reader.cpp
+SOURCES = fasta_reader.cpp timer.cpp
 EXECUTABLES = fasta_reader
 # Replace suffix using macro
 OBJS = $(SOURCES:.cpp=.o)

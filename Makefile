@@ -4,6 +4,7 @@ all:
 	@make -C src ROOT=$(ROOT) OPT=1
 
 clean:
+
 	@make -C src ROOT=$(ROOT) clean
 	@make -C tests ROOT=$(ROOT) clean
 
@@ -15,5 +16,5 @@ test:
 .PHONY: clean
 
 distclean: clean
-	@rm -rf $(AMORDAD_ROOT)/bin
+	@rm -rf $(ROOT)/bin
 .PHONY: distclean

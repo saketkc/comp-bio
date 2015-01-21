@@ -1,4 +1,4 @@
-SOURCES = global_alignment.cpp utils/fasta_reader.cpp scoring_matrix.cpp
+SOURCES = global_alignment.cpp utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
 EXECUTABLES = global_alignment
 INCLUDES = ./utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
@@ -27,11 +27,14 @@ fasta_reader.o: utils/fasta_reader.cpp utils/fasta_reader.hpp
 scoring_matrix.o: scoring_matrix.cpp scoring_matrix.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
+timer.o: utils/timer.cpp utils/timer.hpp
+	$(CXX) $(CXXFLAGS) -c $<
+
 global_alignment.o: global_alignment.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
 
-global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o
+global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o timer.o
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
 install: $(EXECUTABLES)
