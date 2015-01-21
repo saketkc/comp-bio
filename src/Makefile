@@ -1,6 +1,6 @@
 SOURCES = global_alignment.cpp utils/fasta_reader.cpp scoring_matrix.cpp
 EXECUTABLES = global_alignment
-INCLUDES = ../include/ ../utils/
+INCLUDES = ./utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 
 # Replace suffix using macro
@@ -18,13 +18,20 @@ all: global_alignment
 
 ## $<: Name of prerequisite (*.cpp)
 ## $@: Name of target (*.op)
-%.o: %.cpp %.hpp
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+#%.o: %.cpp %.hpp
+#	$(CXX) $(CXXFLAGS) -c $< -o $@
 
 fasta_reader.o: utils/fasta_reader.cpp utils/fasta_reader.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-global_alignment: fasta_reader.o scoring_matrix.o
+scoring_matrix.o: scoring_matrix.cpp scoring_matrix.hpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+global_alignment.o: global_alignment.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+
+global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
 install: $(EXECUTABLES)
