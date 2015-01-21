@@ -15,6 +15,6 @@ install:
  - cd tests/
 
 script:
- - ./global_alignment_test data/test.fasta
+ - ./global_alignment_test
 notifications:
  email: false
