@@ -1,5 +1,6 @@
 #include "fasta_reader.hpp"
 #include "global_alignment.hpp"
+#include "scoring_matrix.hpp"
 
 using std::cout;
 

@@ -1,4 +1,4 @@
-SOURCES = global_alignment.cpp
+SOURCES = global_alignment.cpp utils/fasta_reader.cpp scoring_matrix.cpp
 EXECUTABLES = global_alignment
 INCLUDES = ../include/ ../utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
@@ -20,8 +20,6 @@ all: $(EXECUTABLES)
 ## $@: Name of target (*.op)
 %.o: %.cpp %.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
-%: %.cpp
-	$(CXX) $(CXXFLAGS) -o $@ $^
 
 $(EXECUTABLES): $(OBJS)
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
