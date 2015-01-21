@@ -21,6 +21,9 @@ all: global_alignment
 %.o: %.cpp %.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+fasta_reader.o: utils/fasta_reader.cpp utils/fasta_reader.hpp
+	$(CXX) $(CXXFLAGS) -c $<
+
 global_alignment: fasta_reader.o scoring_matrix.o
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
