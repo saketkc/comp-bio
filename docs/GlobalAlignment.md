@@ -13,9 +13,9 @@ M<sub>ij</sub> = max(M<sub>mm</sub>, M<sub>i1</sub>, M<sub>i2</sub>)
 
 where M<sub> = M<sub>(i-1)(j-1)</sub? + W(U<sub>i</sub>, U<sub>j</sub>) 
 
-M<sub>del1</sub> = M<sub>i(j-1)</sub> + W(U<sub>i</sub>, -) => Aligning U(U<sub>i</sub>) against a gap 
+M<sub>del1</sub> = M<sub>i(j-1)</sub> + W(U<sub>i</sub>, -) => Aligning U<sub>i</sub> against a gap 
 
-M<sub>del2</sub> = M<sub>(i-1)j</sub> + W(-, V<sub>j</sub>)  =>  Aligning V(V<sub>j</sub>) against a gap 
+M<sub>del2</sub> = M<sub>(i-1)j</sub> + W(-, V<sub>j</sub>)  =>  Aligning V<sub>j</sub> against a gap 
 
 Where W(X,Y) is itself a scoring function given by:
 
