@@ -34,10 +34,10 @@ TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score 3", "[create]" ) {
 //This fasta was created by deleting certain obvious lines from two copied sequences
 //Seq1 length = 2210
 //Seq2 length = 2175
-//Since all are a perfect match: Expected Score: (2210)*2 +(2210-2175)*-2*2=4280
+//Since all are a perfect match: Expected Score: (2210)*2 +(2210-2175)*-2*2=4430
 GlobalAlignmentTestFixture::file[]= "../tests/data/align-1000bp.fasta";
-TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score deletions", "[create]" ) {
-        REQUIRE( sequenceProcessor() == 4280 );
+TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score 3", "[create]" ) {
+        REQUIRE( sequenceProcessor() == 3 );
 }
 
 
