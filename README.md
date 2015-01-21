@@ -1,8 +1,6 @@
 ## Algorithms for Computational Biology
 
-### Build Status
-
-[![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
+### Build Status [![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
 
 Currently implemented:
 
