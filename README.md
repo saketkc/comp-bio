@@ -4,7 +4,7 @@
 
 ## Implemented Algorithms:
 
-- [Global Alignment](docs/GlobalAlignment.md)
+- Global Alignment: [Documentation](docs/GlobalAlignment.md)
 
 
 ## How to run?
