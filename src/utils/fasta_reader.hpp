@@ -2,6 +2,9 @@
 #include <fstream>
 #include <string>
 #include <vector>
+
+#include "SimpleIni.h"
+
 using std::string;
 class Fasta{
     public:

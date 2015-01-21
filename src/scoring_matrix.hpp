@@ -1,5 +1,8 @@
 #include <ctime>
 #include <iostream>
+#include <vector>
+#include <stdlib.h>
+
 using std::string;
 using std::vector;
 
@@ -23,27 +26,32 @@ class ScoringMatrix{
     }
     public:
         ScoringMatrix(int rows, int columns);
-        void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
         void initializeIndelPenalties(int INDEL);
-        const int  getRowSize() const;
-        const int  getColumnSize() const;
-        const ScoringInfo getMatrixEntry(int i, int j) const;
+        void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
+
+        /**
+        * NOTE: inlining is implicit for function implmented
+        * inside a class: http://stackoverflow.com/a/86576/756986
+        * We are still going to implement the function
+        * here too as opposed to http://www.parashift.com/c++-faq-lite/inline-member-fns-more.html
+        * since they are mere get functions
+        **/
+
+
+        inline const int  getRowSize() const {return rows;};
+        inline const int  getColumnSize() const {return columns;};
+        inline const ScoringInfo getMatrixEntry(int i, int j) const {return  R[i][j];};
         ~ScoringMatrix();
 
 };
 
 
-void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, int &pINDEL){
-    CSimpleIni ini(true, true, true);
-    ini.SetUnicode();
-    //std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
-    if (ini.LoadFile(config_file) < 0){
-        std::cerr << "Error loading file. Setting default values\n";
-    }
-    else {
-        pMATCH = atoi(ini.GetValue("GlobalAlignment", "match", "2"));
-        pMISMATCH = atoi(ini.GetValue("GlobalAlignment", "mismatch", "-1"));
-        pINDEL = atoi(ini.GetValue("GlobalAlignment", "indel", "-2"));
-    }
-}
+// Define other methods implemented in scoring_matrix.cpp
+
+
+vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string &seq2);
+
+int getOptimalScore(const ScoringMatrix &SM);
+void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
+ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2);
 

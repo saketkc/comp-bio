@@ -1,6 +1,6 @@
 #include "fasta_reader.hpp"
-#include "global_alignment.hpp"
 #include "scoring_matrix.hpp"
+#include <stdlib.h>     /* exit, EXIT_FAILURE */
 
 using std::cout;
 

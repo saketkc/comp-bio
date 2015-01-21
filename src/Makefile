@@ -14,14 +14,14 @@ DEBUG = -g
 CXXFLAGS = -Wall -O3 $(DEBUG) $(INCLUDEARGS)
 
 
-all: $(EXECUTABLES)
+all: global_alignment
 
 ## $<: Name of prerequisite (*.cpp)
 ## $@: Name of target (*.op)
 %.o: %.cpp %.hpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
-$(EXECUTABLES): $(OBJS)
+global_alignment: fasta_reader.o scoring_matrix.o
 	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
 
 install: $(EXECUTABLES)
