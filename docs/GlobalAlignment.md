@@ -9,7 +9,7 @@ against the j<sup>th</sup> position of V.
 Then M<sub>ij</sub> is given by the famous Needleman Wunsch Dynamic programming
 algorithm:
 
-M<sub>ij</sub> = max(M<sub>mm</sub>, M<sub>i1</sub>>, M<sub>i2</sub>)
+M<sub>ij</sub> = max(M<sub>mm</sub>, M<sub>i1</sub>, M<sub>i2</sub>)
 
 where M<sub> = M<sub>(i-1)(j-1)</sub? + W(U<sub>i</sub>, U<sub>j</sub>) 
 
@@ -20,6 +20,9 @@ M<sub>del2</sub> = M<sub>(i-1)j</sub> + W(-, V<sub>j</sub>)  =>  Aligning V(V<su
 Where W(X,Y) is itself a scoring function given by:
 
 W(X,Y) = 2 if X==Y
+
 W(X,Y) = -1 if X!=Y
+
 W(X,Y) = -2 if X== '-' or Y == '-'
+
 
