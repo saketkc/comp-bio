@@ -1,6 +1,6 @@
 SOURCES = global_alignment_test.cpp
 EXECUTABLES = global_alignment_test
-INCLUDES =  ../utils/ ../src/
+INCLUDES =   ../src/ ../src/utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 
 

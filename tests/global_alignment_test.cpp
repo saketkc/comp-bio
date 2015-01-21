@@ -1,7 +1,7 @@
 #define CATCH_CONFIG_MAIN
 #include "catch.hpp"
-#include "fasta_reader.hpp"
-#include "global_alignment.hpp"
+#include "fasta_reader.cpp"
+#include "scoring_matrix.cpp"
 
 class GlobalAlignmentTestFixture {
     private:
