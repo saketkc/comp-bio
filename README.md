@@ -33,7 +33,7 @@ All tests passed (1 assertion in 1 test case)
 
 ## Plots
 
-![plot][timecurve.png]
+![plot](https://raw.githubusercontent.com/saketkc/comp-bio/master/timecurve.png)
 
 
 ## Memory Leaks? NO
