@@ -18,6 +18,30 @@ make install
 ./bin/global_alignment tests/data/align-1000bp-deletions.fasta
 ```
 
+
+##Specifying alternate scores
+By default the scores are set to:
+```
+Match = 2
+Mismatch = -1
+Indel = -2
+
+```
+
+These can be specified at run time by using  `src/config.ini` file:
+```
+./global_alignment tests/data/align-10000bp.fasta src/config.ini
+```
+
+`config.ini` specifies the configuration in the simples possible manner:
+
+```
+[Scores]
+match = 2000
+mismatch = 1
+indel = -2
+```
+
 ## Running tests
 We use [Catch](https://github.com/philsquared/Catch) for running unit test cases.
 ```
