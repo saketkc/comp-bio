@@ -1,6 +1,6 @@
 #include "fasta_reader.hpp"
 
-void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, int &pINDEL){
+void readConfigFile(const char* const config_file, int &MATCH, int &MISMATCH, int &INDEL){
     CSimpleIni ini(true, true, true);
     ini.SetUnicode();
     //std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
@@ -8,9 +8,10 @@ void readConfigFile(const char* const config_file, int &pMATCH, int &pMISMATCH, 
         std::cerr << "Error loading file. Setting default values\n";
     }
     else {
-        pMATCH = atoi(ini.GetValue("GlobalAlignment", "match", "2"));
-        pMISMATCH = atoi(ini.GetValue("GlobalAlignment", "mismatch", "-1"));
-        pINDEL = atoi(ini.GetValue("GlobalAlignment", "indel", "-2"));
+        MATCH = atoi(ini.GetValue("Scores", "match", "2"));
+        MISMATCH = atoi(ini.GetValue("Scores", "mismatch", "-1"));
+        INDEL = atoi(ini.GetValue("Scores", "indel", "-2"));
+        std::cout << "match: " << MATCH << " MISMATCH: " << MISMATCH << " INDEL: " << INDEL << std::endl;
     }
 }
 
