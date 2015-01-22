@@ -1,7 +1,7 @@
 #include "fasta_reader.hpp"
 
 void readConfigFile(const char* const config_file, int &MATCH, int &MISMATCH, int &INDEL){
-    CSimpleIni ini(true, true, true);
+    CSimpleIniA ini(true, true, true);
     ini.SetUnicode();
     //std::cout << "match: " << pMATCH << " MISMATCH: " << pMISMATCH << " INDEL: " << pINDEL << std::endl;
     if (ini.LoadFile(config_file) < 0){

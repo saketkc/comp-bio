@@ -20,7 +20,7 @@ int main(int argc, char **argv){
     }
     if(argc>=3){
         std::cout<< "loading file";
-        char *config_file = argv[1];
+        char *config_file = argv[2];
         readConfigFile(config_file, MATCH, MISMATCH, INDEL);
         std::cout << "match: " << MATCH << " MISMATCH: " << MISMATCH << " INDEL: " << INDEL << std::endl;
 
