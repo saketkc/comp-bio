@@ -31,6 +31,11 @@ All tests passed (1 assertion in 1 test case)
 
 ```
 
+## Plots
+
+![plot][timecurve.png]
+
+
 ## Memory Leaks? NO
 ```
 $ valgrind ./bin/global_alignment tests/data/align-1000bp-deletions.fasta 
