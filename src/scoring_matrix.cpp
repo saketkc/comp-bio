@@ -57,8 +57,10 @@ void ScoringMatrix::reset(int i, int j){
 }
 void ScoringMatrix::minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1){
     int min = match_distance;
-    (min > del_seq2) && (min = del_seq2);
-    (min > del_seq1) && (min = del_seq1);
+    char type = 'M';
+    (min > del_seq2) && (min = del_seq2) && (type='2');
+    (min > del_seq1) && (min = del_seq1) && (type='1');
+    R[i][j].type = type;
     R[i][j].score = min;
 }
 
@@ -84,6 +86,7 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
     std::string seq2Output = "";
 
     while (seq1_length > 0  || seq2_length > 0 ){
+    std::cout << "s1: " << seq1_length << " s2: " << seq2_length << std::endl;
         SI = SM.getMatrixEntry(seq1_length, seq2_length);
         if(SI.type=='M'){
             seq1Output = seq1[seq1_length] + seq1Output;
@@ -148,8 +151,8 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
     int seq2_length = SM.getColumnSize();
     int left, right;
     for (int i=1; i<seq1_length; i++){
-        left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
-        right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
+        left = max(0, i-k);
+        right = min(seq2_length, i+k);
 
         for(int j=left; j<right; j++){
             SM.reset(i,j);
@@ -157,10 +160,13 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
     }
 
     for (int i=1; i<seq1_length; i++){
-        left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
-        right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
+        //left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
+        //right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
+        left = max(0, i-k);
+        right = min(seq2_length, i+k);
 
         for(int j=left; j<=right; j++){
+
             match = SM.getMatrixEntry(i-1, j-1).score;
             if (seq1[i]==seq2[j])
                 match += dMATCH;

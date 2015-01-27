@@ -34,6 +34,11 @@ int main(int argc, char **argv){
     std::string seq1 = fasta_sequences[0].get_seqString();
     std::string seq2 = fasta_sequences[1].get_seqString();
 
+    if(seq1.length()<seq2.length()){
+        std::string seqTemp = seq1;
+        seq1 = seq2;
+        seq2 = seqTemp;
+    }
     std::cout << std::endl <<  "--------------------------------------------" << std::endl;
     std::cout << std::endl << "Sequence 1: " << seq1 << std::endl;
     std::cout << "Sequence 2: " << seq2 << std::endl;
@@ -54,15 +59,15 @@ int main(int argc, char **argv){
     //Assume m>n |A|=m, |B|=n
     //Hence bestDistance = (n-k-1)dMATCH_or_dMISMATCH + (2(k+1)+m-n)dINDEL
 
-    int k =1;
-    int alphaK=320000;
-    int bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
-    while(alphaK >= bestDistance  ){
-        std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
+    int k=1;
+    int alphaK = 32000;
+    int bestDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
+    while(alphaK > k ){
         performKBandAlignment(SM, k, dMATCH, dMISMATCH, dINDEL, seq1, seq2);
         bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
         k*=2;
         alphaK = getOptimalScore(SM);
+        std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
     }
     endTime = getTimeinMilliSeconds();
     std::cout.precision(15);
