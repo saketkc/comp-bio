@@ -55,9 +55,9 @@ int main(int argc, char **argv){
     //Hence bestDistance = (n-k-1)dMATCH_or_dMISMATCH + (2(k+1)+m-n)dINDEL
 
     int k =1;
-    int alphaK=0;
+    int alphaK=320000;
     int bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
-    while(alphaK <= bestDistance){
+    while(alphaK >= bestDistance  ){
         std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
         performKBandAlignment(SM, k, dMATCH, dMISMATCH, dINDEL, seq1, seq2);
         bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
