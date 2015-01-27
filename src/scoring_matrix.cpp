@@ -76,6 +76,19 @@ ScoringMatrix::~ScoringMatrix(){
 }
 
 
+void printScoringMatrix(const ScoringMatrix &SM){
+
+    int seq1_length = SM.getRowSize();
+    int seq2_length = SM.getColumnSize();
+    std::cout<< "Seq1 length: " << seq1_length << " Seq2 length: " << seq2_length << std::endl;
+    for(int i=0; i<seq1_length; i++){
+        for(int j=0; j<seq2_length; j++){
+            std::cout<< SM.getMatrixEntry(i,j).score << " ";
+        }
+        std::cout << std::endl;
+    }
+}
+
 vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string &seq2){
 
     int seq1_length = SM.getRowSize()-1;
@@ -87,7 +100,6 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
 
     while (seq1_length > 0  || seq2_length > 0 ){
         SI = SM.getMatrixEntry(seq1_length, seq2_length);
-        std::cout << "s1: " << seq1_length << " s2: " << seq2_length << std::endl;
         if(SI.type=='M'){
             seq1Output = seq1[seq1_length] + seq1Output;
             seq2Output = seq2[seq2_length] + seq2Output;
@@ -108,7 +120,49 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
            std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
            exit(EXIT_FAILURE);
         }
+    }
 
+    output.push_back(seq1Output);
+    output.push_back(seq2Output);
+    return output;
+}
+vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq1, string &seq2, int k){
+
+    int seq1_length = SM.getRowSize()-1;
+    int seq2_length = SM.getColumnSize()-1;
+    ScoringInfo SI;
+    vector<string> output;
+    std::string seq1Output = "";
+    std::string seq2Output = "";
+    int i = seq1_length;
+    while(i>=1){
+        int j = i+k;
+        if(j>seq2_length)
+            j = seq2_length;
+        while(j>=i-k && i>=1){
+            std::cout << "I: " << i << " J: " <<  j <<std::endl;
+            SI = SM.getMatrixEntry(i, j);
+            if(SI.type=='M'){
+                seq1Output = seq1[i] + seq1Output;
+                seq2Output = seq2[j] + seq2Output;
+                i = i - 1;
+                j = j - 1;
+            }
+            else if (SI.type=='2'){
+                seq1Output = seq1[i] + seq1Output;
+                seq2Output = "-" + seq2Output;
+                i = i - 1;
+            }
+            else if (SI.type=='1'){
+                seq1Output = "-" + seq1Output;
+                seq2Output = seq2[j] + seq2Output;
+                j = j - 1;
+            }
+            else{
+               std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
+               exit(EXIT_FAILURE);
+            }
+        }
     }
 
     output.push_back(seq1Output);
@@ -171,23 +225,31 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
         std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
         for(int j=left; j<=right; j++){
 
-            if(j-1>=left){
+            if(insideBand(i-1,j-1,k)){
                 match = SM.getMatrixEntry(i-1, j-1).score;
             }
             else{
                 match=0;
             }
-            if (seq1[i]==seq2[j])
+            //if (seq1[i]==seq2[j])
                 match += dMATCH;
-            else
-                match += dMISMATCH;
-            del_seq2 = SM.getMatrixEntry(i-1, j).score+dINDEL;
-            if(j-1>=left){
-            del_seq1 = SM.getMatrixEntry(i, j-1).score+dINDEL;
+            //else
+            //    match += dMISMATCH;
+            if (insideBand(i-1,j,k)){
+                del_seq2 = SM.getMatrixEntry(i-1,j).score;
+            }
+            else {
+                del_seq2 = 0;
+            }
+            del_seq2 += dINDEL;
+            if(insideBand(i, j-1, k)){
+            del_seq1 = SM.getMatrixEntry(i, j-1).score;
             }
             else{
-                del_seq1 = dINDEL;
+                del_seq1 = 0;
             }
+
+            del_seq1 += dINDEL;
             SM.minimumDistance(i, j, match, del_seq2, del_seq1);
         }
     }
@@ -204,3 +266,8 @@ ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2) {
     return SM;
 }
 
+bool insideBand(int i, int j, int k){
+    if(std::abs(i-j)<=k)
+        return true;
+    return false;
+}

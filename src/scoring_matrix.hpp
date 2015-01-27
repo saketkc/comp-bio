@@ -52,8 +52,11 @@ class ScoringMatrix{
 
 
 vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string &seq2);
+vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq1, string &seq2, int k);
 
 int getOptimalScore(const ScoringMatrix &SM);
+void printScoringMatrix(const ScoringMatrix &SM);
+bool insideBand(int i, int j, int k);
 void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
 void performKBandAlignment(ScoringMatrix &SM, int k, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
 ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2);

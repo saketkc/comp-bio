@@ -10,6 +10,7 @@ int main(int argc, char **argv){
     int dMISMATCH = 1;
     int dINDEL = 1;
 
+    std::cout << "match: " << dMATCH << " MISMATCH: " << dMISMATCH << " INDEL: " << dINDEL << std::endl;
     std::vector<Fasta> fasta_sequences;
 
     if(argc < 2){
@@ -61,14 +62,14 @@ int main(int argc, char **argv){
 
     int k=1;
     int alphaK = 32000;
-    int bestDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
-    std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
-    while(alphaK > k ){
+    int minDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
+    std::cout << "alpha: "<< alphaK << "best distance: " << minDistance << std::endl;
+    while(alphaK > minDistance ){
         performKBandAlignment(SM, k, dMATCH, dMISMATCH, dINDEL, seq1, seq2);
         k*=2;
-        bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
+        minDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
         alphaK = getOptimalScore(SM);
-        std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
+        std::cout << "alpha: "<< alphaK << "best distance: " << minDistance << std::endl;
     }
     endTime = getTimeinMilliSeconds();
     std::cout.precision(15);
@@ -78,13 +79,13 @@ int main(int argc, char **argv){
     std::cout.precision(15);
 
     std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
-
-    //vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
-   int score = getOptimalScore(SM);
-
+    std::cout << std::endl << "K = " << k << std::endl;
+    printScoringMatrix(SM);
+    vector<string> seqOutput = getOptimalAlignmentFromKBand(SM, seq1, seq2, k);
+    int score = getOptimalScore(SM);
     std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
-   // std::cout << std::endl << seqOutput[0] << std::endl;
-    //std::cout << std::endl << seqOutput[1] << std::endl;
+    std::cout << std::endl << seqOutput[0] << std::endl;
+    std::cout << std::endl << seqOutput[1] << std::endl;
     std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
     std::cout << "Score: " << score << std::endl;
 }
