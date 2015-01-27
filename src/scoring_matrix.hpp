@@ -28,7 +28,7 @@ class ScoringMatrix{
         }
         ScoringMatrix(int rows, int columns);
         void initializeIndelPenalties(int INDEL);
-        void reset(int i, int j);
+        void reset(int i, int j, int value);
         void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
         void minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1);
         /**

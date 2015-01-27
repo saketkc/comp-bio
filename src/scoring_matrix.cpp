@@ -52,8 +52,8 @@ void ScoringMatrix::optimize(int i, int j, int match_mismatch_score, int del_seq
     R[i][j].type = type;
 }
 
-void ScoringMatrix::reset(int i, int j){
-    R[i][j].score = 0;
+void ScoringMatrix::reset(int i, int j, int value){
+    R[i][j].score = value;
 }
 void ScoringMatrix::minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1){
     int min = match_distance;
@@ -150,13 +150,17 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
     int seq1_length = SM.getRowSize();
     int seq2_length = SM.getColumnSize();
     int left, right;
+    for (int j=1; j<seq2_length; j++){
+        SM.reset(0,j,j*dINDEL);
+    }
     for (int i=1; i<seq1_length; i++){
         left = max(0, i-k);
         right = min(seq2_length, i+k);
 
         for(int j=left; j<right; j++){
-            SM.reset(i,j);
+            SM.reset(i,j,0);
         }
+        SM.reset(i,0,i*dINDEL);
     }
     for (int i=1; i<seq1_length; i++){
         //left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
