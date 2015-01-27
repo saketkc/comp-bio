@@ -86,8 +86,8 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
     std::string seq2Output = "";
 
     while (seq1_length > 0  || seq2_length > 0 ){
-    std::cout << "s1: " << seq1_length << " s2: " << seq2_length << std::endl;
         SI = SM.getMatrixEntry(seq1_length, seq2_length);
+        std::cout << "s1: " << seq1_length << " s2: " << seq2_length << std::endl;
         if(SI.type=='M'){
             seq1Output = seq1[seq1_length] + seq1Output;
             seq2Output = seq2[seq2_length] + seq2Output;

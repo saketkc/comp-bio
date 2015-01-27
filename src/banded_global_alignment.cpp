@@ -79,12 +79,12 @@ int main(int argc, char **argv){
     std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
 
     vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
-    int score = getOptimalScore(SM);
+    //int score = getOptimalScore(SM);
 
     std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
-    std::cout << std::endl << seqOutput[0] << std::endl;
-    std::cout << std::endl << seqOutput[1] << std::endl;
+    //std::cout << std::endl << seqOutput[0] << std::endl;
+    //std::cout << std::endl << seqOutput[1] << std::endl;
     std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
-    std::cout << "Score: " << score << std::endl;
+    //std::cout << "Score: " << score << std::endl;
 }
 
