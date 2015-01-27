@@ -1,7 +1,8 @@
 #include <ctime>
 #include <iostream>
 #include <vector>
-#include <stdlib.h>
+#include <cstdlib>
+#include <cmath>
 
 using std::string;
 using std::vector;
@@ -17,18 +18,19 @@ class ScoringMatrix{
     int rows, columns;
     //Pointer to a pointer, since an array <=> pointer
     ScoringInfo **R;
-    void initMatrix(){
-        // Pointer to pointer p is assigned to an array of integers
-        R = new ScoringInfo*[rows];
-        for (int i=0; i<rows; i++){
-            R[i] = new ScoringInfo [columns];
-        }
-    }
     public:
+        void initMatrix(){
+            // Pointer to pointer p is assigned to an array of integers
+            R = new ScoringInfo*[rows];
+            for (int i=0; i<rows; i++){
+                R[i] = new ScoringInfo [columns];
+            }
+        }
         ScoringMatrix(int rows, int columns);
         void initializeIndelPenalties(int INDEL);
+        void reset(int i, int j);
         void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
-
+        void minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1);
         /**
         * NOTE: inlining is implicit for function implmented
         * inside a class: http://stackoverflow.com/a/86576/756986
@@ -53,5 +55,6 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
 
 int getOptimalScore(const ScoringMatrix &SM);
 void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
+void performKBandAlignment(ScoringMatrix &SM, int k, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
 ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2);
 

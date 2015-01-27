@@ -1,5 +1,6 @@
 #include "scoring_matrix.hpp"
-
+using std::min;
+using std::max;
 //Put constructors in .cpp unless they are inline implementations
 // http://stackoverflow.com/a/4761871/756986
 
@@ -51,6 +52,15 @@ void ScoringMatrix::optimize(int i, int j, int match_mismatch_score, int del_seq
     R[i][j].type = type;
 }
 
+void ScoringMatrix::reset(int i, int j){
+    R[i][j].score = 0;
+}
+void ScoringMatrix::minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1){
+    int min = match_distance;
+    (min > del_seq2) && (min = del_seq2);
+    (min > del_seq1) && (min = del_seq1);
+    R[i][j].score = min;
+}
 
 //Destructor
 ScoringMatrix::~ScoringMatrix(){
@@ -132,6 +142,37 @@ void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISM
 
 }
 
+void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const int &dMISMATCH, const int &dINDEL, std::string &seq1, std::string &seq2){
+    int match=0, del_seq2=0, del_seq1=0;
+    int seq1_length = SM.getRowSize();
+    int seq2_length = SM.getColumnSize();
+    int left, right;
+    for (int i=1; i<seq1_length; i++){
+        left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
+        right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
+
+        for(int j=left; j<right; j++){
+            SM.reset(i,j);
+        }
+    }
+
+    for (int i=1; i<seq1_length; i++){
+        left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
+        right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
+
+        for(int j=left; j<=right; j++){
+            match = SM.getMatrixEntry(i-1, j-1).score;
+            if (seq1[i]==seq2[j])
+                match += dMATCH;
+            else
+                match += dMISMATCH;
+            del_seq2 = SM.getMatrixEntry(i-1, j).score+dINDEL;
+            del_seq1 = SM.getMatrixEntry(i, j-1).score+dINDEL;
+            SM.minimumDistance(i, j, match, del_seq2, del_seq1);
+        }
+    }
+}
+
 //TODO This should be generic too for multiple sequences
 ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2) {
     //We assume only two sequences for now
@@ -142,3 +183,4 @@ ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2) {
     ScoringMatrix SM(seq1_length, seq2_length);
     return SM;
 }
+
