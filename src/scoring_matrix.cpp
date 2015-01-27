@@ -105,8 +105,8 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
             seq2_length = seq2_length - 1;
         }
         else{
-            std::cerr << "Unknown score. Exiting since this is surely a bug!" << std::endl;
-            exit(EXIT_FAILURE);
+           std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
+           exit(EXIT_FAILURE);
         }
 
     }
@@ -158,22 +158,32 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
             SM.reset(i,j);
         }
     }
-
     for (int i=1; i<seq1_length; i++){
         //left = max(0, i-(k - abs(seq1_length-seq2_length))/2);
         //right = min(seq2_length, i+(k - abs(seq1_length-seq2_length))/2);
         left = max(0, i-k);
-        right = min(seq2_length, i+k);
-
+        left = min(left, seq2_length-1);
+        right = min(seq2_length-1, i+k);
+        std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
         for(int j=left; j<=right; j++){
 
-            match = SM.getMatrixEntry(i-1, j-1).score;
+            if(j-1>=left){
+                match = SM.getMatrixEntry(i-1, j-1).score;
+            }
+            else{
+                match=0;
+            }
             if (seq1[i]==seq2[j])
                 match += dMATCH;
             else
                 match += dMISMATCH;
             del_seq2 = SM.getMatrixEntry(i-1, j).score+dINDEL;
+            if(j-1>=left){
             del_seq1 = SM.getMatrixEntry(i, j-1).score+dINDEL;
+            }
+            else{
+                del_seq1 = dINDEL;
+            }
             SM.minimumDistance(i, j, match, del_seq2, del_seq1);
         }
     }

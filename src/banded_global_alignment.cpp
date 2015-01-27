@@ -44,7 +44,7 @@ int main(int argc, char **argv){
     std::cout << "Sequence 2: " << seq2 << std::endl;
 
     std::cout << std::endl <<  "--------------------------------------------" << std::endl;
-    std::cout << std::endl << "Sequence2 Length: " << seq1.length() << std::endl;
+    std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
     std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
 
     startTime = getTimeinMilliSeconds();
@@ -63,9 +63,10 @@ int main(int argc, char **argv){
     int alphaK = 32000;
     int bestDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
     while(alphaK > k ){
+        std::cout << "k: "<< k <<std::endl;
         performKBandAlignment(SM, k, dMATCH, dMISMATCH, dINDEL, seq1, seq2);
-        bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
         k*=2;
+        bestDistance = (min(seq1.length(), seq2.length())-k-1)*dMATCH - (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
         alphaK = getOptimalScore(SM);
         std::cout << "alpha: "<< alphaK << "best distance: " << bestDistance << std::endl;
     }
@@ -78,13 +79,13 @@ int main(int argc, char **argv){
 
     std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
 
-    vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
-    //int score = getOptimalScore(SM);
+    //vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
+   int score = getOptimalScore(SM);
 
     std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
-    //std::cout << std::endl << seqOutput[0] << std::endl;
+   // std::cout << std::endl << seqOutput[0] << std::endl;
     //std::cout << std::endl << seqOutput[1] << std::endl;
     std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
-    //std::cout << "Score: " << score << std::endl;
+    std::cout << "Score: " << score << std::endl;
 }
 
