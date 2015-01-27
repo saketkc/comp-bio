@@ -137,9 +137,10 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
     int i = seq1_length;
     while(i>=1){
         int j = i+k;
+            std::cout << "I: " << i << " J: " <<  j <<std::endl;
         if(j>seq2_length)
             j = seq2_length;
-        while(j>=i-k && i>=1){
+        while(j>=i-k && i>=1 && j>0){
             std::cout << "I: " << i << " J: " <<  j <<std::endl;
             SI = SM.getMatrixEntry(i, j);
             if(SI.type=='M'){

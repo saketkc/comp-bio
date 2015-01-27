@@ -80,7 +80,7 @@ int main(int argc, char **argv){
 
     std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
     std::cout << std::endl << "K = " << k << std::endl;
-    printScoringMatrix(SM);
+    //printScoringMatrix(SM);
     vector<string> seqOutput = getOptimalAlignmentFromKBand(SM, seq1, seq2, k);
     int score = getOptimalScore(SM);
     std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
