@@ -45,7 +45,7 @@ int main(int argc, char **argv){
 
     startTime = getTimeinMilliSeconds();
     ScoringMatrix SM = createScoringMatrixFromSequences(seq1, seq2);
-    performGlobalAlignment(SM, MATCH, MISMATCH, INDEL, seq1, seq2);
+    performGlobalAlignment(SM, MATCH, MISMATCH, INDEL, seq1, seq2, false);
     endTime = getTimeinMilliSeconds();
     std::cout.precision(15);
     std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
@@ -53,7 +53,7 @@ int main(int argc, char **argv){
 
     std::cout.precision(15);
 
-    std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
+    std::cout << std::endl << "[ERROR] Aligning complete in: " << difference << " ms" << std::endl;
 
     vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
     int score = getOptimalScore(SM);

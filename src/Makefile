@@ -1,10 +1,15 @@
-SOURCES =  banded_global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
-EXECUTABLES = banded_global_alignment
+GSOURCES =  global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
+BSOURCES =  banded_global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
+DSOURCES =  global_alignment_distancewise.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
+EXECUTABLES = banded_global_alignment global_alignment global_alignment_distancewise
 INCLUDES = ./utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 
 # Replace suffix using macro
-OBJS = $(SOURCES:.cpp=.o)
+GOBJS = $(GSOURCES:.cpp=.o)
+BOBJS = $(BSOURCES:.cpp=.o)
+DOBJS = $(DSOURCES:.cpp=.o)
+
 CXX = g++
 
 # Turn on debug
@@ -14,7 +19,7 @@ DEBUG = -g
 CXXFLAGS = -Wall -O3 $(DEBUG) $(INCLUDEARGS)
 
 
-all: global_alignment banded_global_alignment
+all: banded_global_alignment global_alignment global_alignment_distancewise
 
 ## $<: Name of prerequisite (*.cpp)
 ## $@: Name of target (*.op)
@@ -30,18 +35,25 @@ scoring_matrix.o: scoring_matrix.cpp scoring_matrix.hpp
 timer.o: utils/timer.cpp utils/timer.hpp
 	$(CXX) $(CXXFLAGS) -c $<
 
-global_alignment.o: global_alignment.cpp
-	$(CXX) $(CXXFLAGS) -c $<
-
 banded_global_alignment.o: banded_global_alignment.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
+global_alignment.o: global_alignment.cpp
+	$(CXX) $(CXXFLAGS) -c $<
 
-global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o timer.o
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+global_alignment_distancewise.o: global_alignment_distancewise.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
 
 banded_global_alignment: banded_global_alignment.o utils/fasta_reader.o scoring_matrix.o timer.o
-	$(CXX) $(CXXFLAGS) $(OBJS) -o $@
+	$(CXX) $(CXXFLAGS) $(BOBJS) -o $@
+
+
+global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o timer.o
+	$(CXX) $(CXXFLAGS) $(GOBJS) -o $@
+
+global_alignment_distancewise: global_alignment_distancewise.o utils/fasta_reader.o scoring_matrix.o timer.o
+	$(CXX) $(CXXFLAGS) $(DOBJS) -o $@
 
 install: $(EXECUTABLES)
 	@mkdir -p $(ROOT)/bin
@@ -51,3 +63,4 @@ test:
 	global_alignment_test
 clean:
 	@-rm -f *.o *~
+	@-rm -f $(EXECUTABLES)

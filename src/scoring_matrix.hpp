@@ -29,7 +29,7 @@ class ScoringMatrix{
         ScoringMatrix(int rows, int columns);
         void initializeIndelPenalties(int INDEL);
         void reset(int i, int j, int value);
-        void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2);
+        void optimize(int i, int j, int match_mismatch_score, int indel_seq1, int indel_seq2, bool isDistance);
         void minimumDistance(int i, int j, int match_distance, int del_seq2, int del_seq1);
         /**
         * NOTE: inlining is implicit for function implmented
@@ -56,8 +56,9 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
 
 int getOptimalScore(const ScoringMatrix &SM);
 void printScoringMatrix(const ScoringMatrix &SM);
+void printScoringMatrixType(const ScoringMatrix &SM);
 bool insideBand(int i, int j, int k);
-void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
+void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2, bool isDistance);
 void performKBandAlignment(ScoringMatrix &SM, int k, const int &MATCH, const int &MISMATCH, const int &INDEL, std::string &seq1, std::string &seq2);
 ScoringMatrix createScoringMatrixFromSequences(string &seq1, string &seq2);
 
