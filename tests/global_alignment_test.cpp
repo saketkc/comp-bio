@@ -7,9 +7,9 @@ class GlobalAlignmentTestFixture {
     public:
         static char input_file[];
         int sequenceProcessor(){
-            int MATCH = 2;
-            int MISMATCH = -1;
-            int INDEL = -2;
+            int MATCH = 0;
+            int MISMATCH = 1;
+            int INDEL = 1;
 
 
             std::vector<Fasta> fasta_sequences;
@@ -19,7 +19,7 @@ class GlobalAlignmentTestFixture {
             std::string seq2 = fasta_sequences[1].get_seqString();
             ScoringMatrix SM = createScoringMatrixFromSequences(seq1, seq2);
 
-            performGlobalAlignment(SM, MATCH, MISMATCH, INDEL, seq1, seq2);
+            performGlobalAlignment(SM, MATCH, MISMATCH, INDEL, seq1, seq2, true);
             vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
             int score = getOptimalScore(SM);
             return score;
@@ -30,9 +30,10 @@ class GlobalAlignmentTestFixture {
 //Seq1 length = 2210
 //Seq2 length = 2175
 //Since all are a perfect match: Expected Score: (2210)*2 +(2210-2175)*-2*2=4280
+//indel ditance=1 so (2210-2175)*1=35
 char GlobalAlignmentTestFixture::input_file[] = "./data/align-1000bp-deletions.fasta";
 TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score deletions", "[create]" ) {
-        REQUIRE( sequenceProcessor() == 4280 );
+        REQUIRE( sequenceProcessor() == 35 );
 }
 
 
