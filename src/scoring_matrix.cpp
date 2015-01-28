@@ -142,7 +142,7 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
 
            //std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
             std::cout << "Unknwon score. I: " << seq1_length << " j " << seq2_length << std::endl;
-           exit(EXIT_FAILURE);
+            exit(EXIT_FAILURE);
         }
     }
 
