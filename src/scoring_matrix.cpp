@@ -154,6 +154,7 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
 
     int seq1_length = SM.getRowSize()-1;
     int seq2_length = SM.getColumnSize()-1;
+    int maxseq2_length = seq2_length;
     ScoringInfo SI;
     vector<string> output;
     std::string seq1Output = "";
@@ -163,7 +164,10 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
         SI = SM.getMatrixEntry(seq1_length, seq2_length);
         if (!insideBand(seq1_length, seq2_length, k)){
             std::cout << "Unknwon score so increasing I: " << seq1_length << " j " << seq2_length << std::endl;
-            seq2_length+=1;
+            //We will still sit on the same row
+            //Now j can be j-1,j=
+            seq2_length-=1;
+            seq2_length = std::max(0,seq2_length);
         }
         if(SI.type=='M'){
             seq1Output = seq1[seq1_length] + seq1Output;
@@ -185,7 +189,7 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
             seq2_length+=1;
            //std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
             std::cout << "Unknwon score. I: " << seq1_length << " j " << seq2_length << std::endl;
-           //exit(EXIT_FAILURE);
+           exit(EXIT_FAILURE);
         }
     }
 
@@ -248,7 +252,7 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
         left = max(0, i-k);
         left = min(left, seq2_length-1);
         right = min(seq2_length-1, i+k);
-        std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
+        //std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
         for(int j=left; j<=right; j++){
 
             if(insideBand(i-1,j-1,k)){
