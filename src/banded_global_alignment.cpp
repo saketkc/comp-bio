@@ -69,7 +69,7 @@ int main(int argc, char **argv){
         k*=2;
         minDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
         alphaK = getOptimalScore(SM);
-        std::cout << "alpha: "<< alphaK << "best distance: " << minDistance << std::endl;
+        //std::cout << "alpha: "<< alphaK << "best distance: " << minDistance << std::endl;
     }
     endTime = getTimeinMilliSeconds();
     std::cout.precision(15);
