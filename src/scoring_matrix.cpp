@@ -251,7 +251,7 @@ void performKBandAlignment(ScoringMatrix &SM, int k, const int &dMATCH, const in
         left = max(0, i-k);
         left = min(left, seq2_length-1);
         right = min(seq2_length-1, i+k);
-        std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
+        //std::cout <<"k: " << k << "i: " << i << " left: " << left<< " right: "<< right << std::endl;
         for(int j=left; j<=right; j++){
 
             if(insideBand(i-1,j-1,k)){
