@@ -25,7 +25,7 @@ class GlobalAlignmentTestFixture {
             return score;
     }
         int scoreBasedProcessor(){
-            int MATCH = 1;
+            int MATCH = 2;
             int MISMATCH = -1;
             int INDEL = -2;
 
@@ -80,8 +80,7 @@ class GlobalAlignmentTestFixture {
 char GlobalAlignmentTestFixture::input_file[] = "./data/align-1000bp-deletions.fasta";
 TEST_CASE_METHOD(GlobalAlignmentTestFixture, "Test with score deletions", "[create]" ) {
         REQUIRE( distanceBasedProcessor() == 35 );
-        //REQUIRE( scoreBasedProcessor() == 4280 );
-
+        REQUIRE( scoreBasedProcessor() == 4280 );
         REQUIRE( distanceBasedKBandProcessor() == 35);
 }
 
