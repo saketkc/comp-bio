@@ -19,6 +19,10 @@ instead of looping over n<sup>2</sup> or n*xm values
 we loop only over
 
 
+Implementation
+=====================
+D[i,0] = i**INDEL
+D[0,j] = j* INDEL
 
 Results
 ================
