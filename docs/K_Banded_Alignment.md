@@ -30,14 +30,20 @@ score  = infinity(some large value)
 minDistance = 0
 
 k = 1
+
 while(score > minDistance){
+
     performKBandedAlignment()
+
     k*=2
+
     minDistance = (seq2.length()-k-1)*dMATCH + (2*(k+1)+abs(seq1.length()-seq2.length()))*dINDEL;
+
     score = getOptimalScore(SM);
 
 
 }
+
 getoptimalscore() returns D[seq1_length, seq2_length] and seq1_length >= seq2_length is ensured.
 
 
