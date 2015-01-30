@@ -33,9 +33,9 @@ int main(int argc, char **argv){
     std::cout.precision(15);
     std::string seq1 = fasta_sequences[0].get_seqString();
     std::string seq2 = fasta_sequences[1].get_seqString();
-    std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
-    std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
-    std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
+    //std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
+  //  std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
+   // std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
 
 
 
@@ -53,14 +53,17 @@ int main(int argc, char **argv){
 
     std::cout.precision(15);
 
-    std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
+    //std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
 
     vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
     int score = getOptimalScore(SM);
+    //std::cout <<  seq1.length() << "," << seq2.length() << std::endl;
 
 //    std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
   //  std::cout << std::endl << seqOutput[0] << std::endl;
   //  std::cout << std::endl << seqOutput[1] << std::endl;
   //  std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
-    std::cout << "Score: " << score << std::endl;
+   // std::cout << "Score: " << score << std::endl;
+   //
+    std::cout <<  seq1.length() << "," << seq2.length()  << "," << difference << "," << score << std::endl;
 }

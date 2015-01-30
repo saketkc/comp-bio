@@ -208,6 +208,14 @@ void performGlobalAlignment(ScoringMatrix &SM, const int &MATCH, const int &MISM
     int seq1_length = SM.getRowSize();
     int seq2_length = SM.getColumnSize();
 
+    if(isDistance){
+        //Reset everything to a high value
+        for (int i=1; i<seq1_length; i++){
+            for (int j=1; j<seq2_length; j++){
+                SM.reset(i,j,-32000);
+            }
+        }
+    }
     for (int i=1; i<seq1_length; i++){
        for(int j=1; j<seq2_length; j++){
 
