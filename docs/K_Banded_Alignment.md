@@ -21,6 +21,7 @@ we loop only over
 
 Implementation
 =====================
+```
 D[i,0] = i\*INDEL
 
 D[0,j] = j\*INDEL
@@ -46,7 +47,7 @@ while(score > minDistance){
 
 getoptimalscore() returns D[seq1_length, seq2_length] and seq1_length >= seq2_length is ensured.
 
-
+```
 
 Expected running time
 ==============================
