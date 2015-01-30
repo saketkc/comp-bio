@@ -52,12 +52,12 @@ void ScoringMatrix::optimize(int i, int j, int match_mismatch_score, int del_seq
     R[i][j].score = max;
     R[i][j].type = type;}
     else{
-    int min = match_mismatch_score;
-    char type = 'M';
-    (min > del_seq2) && (min = del_seq2) && (type='2');
-    (min > del_seq1) && (min = del_seq1) && (type='1');
-    R[i][j].type = type;
-    R[i][j].score = min;
+        int min = match_mismatch_score;
+        char type = 'M';
+        (min > del_seq2) && (min = del_seq2) && (type='2');
+        (min > del_seq1) && (min = del_seq1) && (type='1');
+        R[i][j].type = type;
+        R[i][j].score = min;
 
     }
 }
@@ -140,8 +140,7 @@ vector<string> getOptimalAlignment(const ScoringMatrix &SM, string &seq1, string
         }
         else{
 
-           //std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
-            std::cout << "Unknwon score. I: " << seq1_length << " j " << seq2_length << std::endl;
+            std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
             exit(EXIT_FAILURE);
         }
     }
@@ -180,14 +179,12 @@ vector<string> getOptimalAlignmentFromKBand(const ScoringMatrix &SM, string &seq
         }
         else{
         if (!insideBand(seq1_length, seq2_length, k)){
-            std::cout << "Unknwon score so increasing I: " << seq1_length << " j " << seq2_length << std::endl;
             //We will still sit on the same row
             //Now j can be j-1,j=
             seq2_length-=1;
             seq2_length = std::max(0,seq2_length);
         }
-           //std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
-            std::cout << "Unknwon score. I: " << seq1_length << " j " << seq2_length << std::endl;
+           std::cerr << "Unknown score. Exiting since this is surely a bug! "  << SI.type << " score: " << SI.score <<  std::endl;
            exit(EXIT_FAILURE);
         }
     }
