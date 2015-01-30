@@ -54,7 +54,7 @@ Expected running time
 
 `kn + (1\2)kn + (1\4)kn + ... <=2kn`
 
-So `~O(2n<sup>2</sup>)`
+So ~O(2n<sup>2</sup>)
 
 Results
 ================
