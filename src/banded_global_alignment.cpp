@@ -10,7 +10,7 @@ int main(int argc, char **argv){
     int dMISMATCH = 1;
     int dINDEL = 1;
 
-    std::cout << "match: " << dMATCH << " MISMATCH: " << dMISMATCH << " INDEL: " << dINDEL << std::endl;
+    //std::cout << "match: " << dMATCH << " MISMATCH: " << dMISMATCH << " INDEL: " << dINDEL << std::endl;
     std::vector<Fasta> fasta_sequences;
 
     if(argc < 2){

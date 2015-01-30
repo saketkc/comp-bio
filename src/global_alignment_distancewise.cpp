@@ -25,6 +25,7 @@ int main(int argc, char **argv){
         std::cout << "match: " << MATCH << " MISMATCH: " << MISMATCH << " INDEL: " << INDEL << std::endl;
 
     }
+    //    std::cout << "match: " << MATCH << " MISMATCH: " << MISMATCH << " INDEL: " << INDEL << std::endl;
     timestamp_t startTime=0, endTime=0, difference=0;
     startTime = getTimeinMilliSeconds();
     fasta_sequences = FastaReader(argv[1]);
@@ -33,6 +34,11 @@ int main(int argc, char **argv){
     std::cout.precision(15);
     std::string seq1 = fasta_sequences[0].get_seqString();
     std::string seq2 = fasta_sequences[1].get_seqString();
+    if(seq1.length()<seq2.length()){
+        std::string seqTemp = seq1;
+        seq1 = seq2;
+        seq2 = seqTemp;
+    }
     //std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
   //  std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
    // std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
@@ -65,5 +71,8 @@ int main(int argc, char **argv){
   //  std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
    // std::cout << "Score: " << score << std::endl;
    //
+    //printScoringMatrix(SM);
+    //std::cout << std::endl <<  std::endl;
+    //printScoringMatrixType(SM);
     std::cout <<  seq1.length() << "," << seq2.length()  << "," << difference << "," << score << std::endl;
 }
