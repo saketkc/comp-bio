@@ -39,17 +39,17 @@ int main(int argc, char **argv){
         seq1 = seq2;
         seq2 = seqTemp;
     }
-    //std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
-  //  std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
-   // std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
+    std::cout << std::endl << "Sequence1 Length: " << seq1.length() << std::endl;
+    std::cout <<  "Sequence2 Length: " << seq2.length() << std::endl;
+    std::cout << std::endl << "[LOG] Reading complete in: " << difference << " ms" << std::endl;
 
 
 
-    //std::cout << std::endl <<  "--------------------------------------------" << std::endl;
-   // std::cout << std::endl << "Sequence 1: " << seq1 << std::endl;
-    //std::cout << "Sequence 2: " << seq2 << std::endl;
+    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
+    std::cout << std::endl << "Sequence 1: " << seq1 << std::endl;
+    std::cout << "Sequence 2: " << seq2 << std::endl;
 
-//    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
+    std::cout << std::endl <<  "--------------------------------------------" << std::endl;
 
     startTime = getTimeinMilliSeconds();
     ScoringMatrix SM = createScoringMatrixFromSequences(seq1, seq2);
@@ -59,20 +59,20 @@ int main(int argc, char **argv){
 
     std::cout.precision(15);
 
-    //std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
+    std::cout << std::endl << "[LOG] Aligning complete in: " << difference << " ms" << std::endl;
 
     vector<string> seqOutput = getOptimalAlignment(SM, seq1, seq2);
     int score = getOptimalScore(SM);
     //std::cout <<  seq1.length() << "," << seq2.length() << std::endl;
 
-//    std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
-  //  std::cout << std::endl << seqOutput[0] << std::endl;
-  //  std::cout << std::endl << seqOutput[1] << std::endl;
-  //  std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
-   // std::cout << "Score: " << score << std::endl;
+    std::cout << std::endl <<  "----------------------Optimal Alignment Start--------------------------" << std::endl;
+    std::cout << std::endl << seqOutput[0] << std::endl;
+    std::cout << std::endl << seqOutput[1] << std::endl;
+    std::cout << std::endl <<  "----------------------Optimal Alignment End--------------------------" << std::endl;
+    std::cout << "Score: " << score << std::endl;
    //
     //printScoringMatrix(SM);
     //std::cout << std::endl <<  std::endl;
     //printScoringMatrixType(SM);
-    std::cout <<  seq1.length() << "," << seq2.length()  << "," << difference << "," << score << std::endl;
+   // std::cout <<  seq1.length() << "," << seq2.length()  << "," << difference << "," << score << std::endl;
 }
