@@ -15,6 +15,6 @@ install:
  - cd tests/
 
 script:
- - ./global_alignment_test
+ - make test
 notifications:
  email: false

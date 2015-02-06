@@ -46,6 +46,7 @@ install: $(EXECUTABLES)
 	@mkdir -p $(ROOT)/bin
 	@install -m 755 $(EXECUTABLES) $(ROOT)/bin
 test:
-	global_alignment_test test_fasta_reader
+	./global_alignment_test 
+	./test_fasta_reader
 clean:
 	@-rm -f *.o *~
