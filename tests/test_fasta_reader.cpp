@@ -12,7 +12,7 @@ class FastaReaderTestFixture{
         }
 };
 
-char FastaReaderTestFixture::input_file[] = "./data/multiple_seq3.fasta";
+char FastaReaderTestFixture::input_file[] = "./data/multiple_seq2.fasta";
 TEST_CASE_METHOD(FastaReaderTestFixture, "Test Fasta Reader", "[create]"){
-    REQUIRE(numberOfSequences()==3);
+    REQUIRE(numberOfSequences()==5);
 }
