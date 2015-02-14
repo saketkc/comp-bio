@@ -1,7 +1,8 @@
 GSOURCES =  global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
 BSOURCES =  banded_global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
 DSOURCES =  global_alignment_distancewise.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
-EXECUTABLES = banded_global_alignment global_alignment global_alignment_distancewise
+MSOURCES =  multiple_alignment.cpp utils/fasta_reader.cpp sequence_profile.cpp sequece_preprocessor.cpp
+EXECUTABLES = banded_global_alignment global_alignment global_alignment_distancewise multiple_alignment
 INCLUDES = ./utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 
@@ -9,6 +10,7 @@ INCLUDEARGS = $(addprefix -I, $(INCLUDES))
 GOBJS = $(GSOURCES:.cpp=.o)
 BOBJS = $(BSOURCES:.cpp=.o)
 DOBJS = $(DSOURCES:.cpp=.o)
+MOBJS = $(MSOURCES:.cpp=.o)
 
 CXX = g++
 
@@ -19,7 +21,7 @@ DEBUG = -g
 CXXFLAGS = -Wall -O3 $(DEBUG) $(INCLUDEARGS)
 
 
-all: banded_global_alignment global_alignment global_alignment_distancewise
+all: banded_global_alignment global_alignment global_alignment_distancewise multiple_alignment
 
 ## $<: Name of prerequisite (*.cpp)
 ## $@: Name of target (*.op)
@@ -41,6 +43,15 @@ banded_global_alignment.o: banded_global_alignment.cpp
 global_alignment.o: global_alignment.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
+multiple_alignment.o: multiple_alignment.cpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+sequence_profile.o: sequence_profile.cpp sequence_profile.hpp
+	$(CXX) $(CXXFLAGS) -c $<
+
+sequence_preprocessor.o: sequence_preprocessor.cpp sequence_preprocessor.hpp
+	$(CXX) $(CXXFLAGS) -c $<
+
 global_alignment_distancewise.o: global_alignment_distancewise.cpp
 	$(CXX) $(CXXFLAGS) -c $<
 
@@ -54,6 +65,9 @@ global_alignment: global_alignment.o utils/fasta_reader.o scoring_matrix.o timer
 
 global_alignment_distancewise: global_alignment_distancewise.o utils/fasta_reader.o scoring_matrix.o timer.o
 	$(CXX) $(CXXFLAGS) $(DOBJS) -o $@
+
+multiple_alignment: multiple_alignment.o utils/fasta_reader.o sequence_profile.o sequence_preprocessor.o timer.o
+	$(CXX) $(CXXFLAGS) $(GOBJS) -o $@
 
 install: $(EXECUTABLES)
 	@mkdir -p $(ROOT)/bin
