@@ -30,4 +30,5 @@ global_alignment
 global_alignment_test
 banded_global_alignment
 global_alignment_distancewise
+multiple_alignment
 
