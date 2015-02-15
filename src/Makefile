@@ -1,7 +1,7 @@
 GSOURCES =  global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
 BSOURCES =  banded_global_alignment.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
 DSOURCES =  global_alignment_distancewise.cpp  utils/fasta_reader.cpp scoring_matrix.cpp timer.cpp
-MSOURCES =  multiple_alignment.cpp utils/fasta_reader.cpp sequence_profile.cpp sequece_preprocessor.cpp
+MSOURCES =  multiple_alignment.cpp utils/fasta_reader.cpp timer.cpp sequence_profile.cpp sequence_preprocessor.cpp
 EXECUTABLES = banded_global_alignment global_alignment global_alignment_distancewise multiple_alignment
 INCLUDES = ./utils/
 INCLUDEARGS = $(addprefix -I, $(INCLUDES))
@@ -67,7 +67,7 @@ global_alignment_distancewise: global_alignment_distancewise.o utils/fasta_reade
 	$(CXX) $(CXXFLAGS) $(DOBJS) -o $@
 
 multiple_alignment: multiple_alignment.o utils/fasta_reader.o sequence_profile.o sequence_preprocessor.o timer.o
-	$(CXX) $(CXXFLAGS) $(GOBJS) -o $@
+	$(CXX) $(CXXFLAGS) $(MOBJS) -o $@
 
 install: $(EXECUTABLES)
 	@mkdir -p $(ROOT)/bin

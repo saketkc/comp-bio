@@ -27,8 +27,33 @@ class ProfileMatrix{
                 }
             }
         }
+        void print(){
+            for (int i=0; i<rows; i++){
+                for (int j=0;j<columns;j++){
+                    std::cout << P[i][j] << " ";
+                }
+                std::cout << std::endl;
+            }
+        }
         ProfileMatrix(int rows, int columns);
         ~ProfileMatrix();
+        void incrementCount(int row, int column){
+            P[row][column]+=1;
+
+        }
+        void shiftCountsUp(){
+            //If rows are 5 shift by 1/4
+            //Else shift by 1/20
+            float shift = 1.0/4.0;
+            if(rows>=5){
+                shift = 1.0/20.0;
+            }
+            for (int i=0;i<rows;i++){
+                for(int j=0;j<columns;j++){
+                    P[i][j]+=shift;
+                }
+            }
+        }
 
 };
 

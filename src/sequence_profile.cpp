@@ -6,7 +6,6 @@ ProfileMatrix::ProfileMatrix(int rows, int columns) :rows(rows), columns(columns
     initProfileMatrix();
 }
 
-
 ProfileMatrix::~ProfileMatrix(){
     //Free the matrix
     for (int i=0; i<rows; i++){

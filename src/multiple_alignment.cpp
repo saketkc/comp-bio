@@ -30,10 +30,10 @@ int main(int argc, char **argv){
     fasta_sequences = FastaReader(argv[1]);
     endTime = getTimeinMilliSeconds();
     difference = endTime-startTime;
-    std::cout << difference;
-    //Determine type of Sequence is DNA or AA.
-    //preprocessSequences(fasta_sequences);
-    createProfileFromSequences(fasta_sequences);
+    std::cout <<  "[LOG] Loading sequences complete in: " << difference << " ms"<<std::endl;
+    ProfileMatrix PM = createProfileFromSequences(fasta_sequences);
+    PM.shiftCountsUp();
+    PM.print();
     int numberOfSequences = fasta_sequences.size();
     return numberOfSequences;
 }

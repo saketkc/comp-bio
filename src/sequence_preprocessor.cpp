@@ -32,7 +32,7 @@ ProfileMatrix createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
     }
 
     ProfileMatrix SP = ProfileMatrix(rows, columns);
-
+    std::cout << "Rows: " << rows << " Columns: " << columns << std::endl;
 
     //Loop through the sequences(columns)
     //Increase count vectors for DNA//AA Sequence
@@ -43,7 +43,7 @@ ProfileMatrix createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
             const char *p = std::find(seqMap, end, seq[x]);
             if (p!=end){
                 int dist = std::distance(seqMap, p);
-                std::cout<<dist;
+                SP.incrementCount(dist,j);
             }
             else{
                 std::cout << "[Error]:: Found" << seq[x]<<std::endl;
