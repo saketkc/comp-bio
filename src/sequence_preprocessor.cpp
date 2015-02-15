@@ -53,3 +53,11 @@ ProfileMatrix createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
     }
     return SP;
 }
+
+int createDistanceMatrix(ProfileMatrix &SP){
+    for(int i=0; i<SP.getRows(); i++){
+
+    }
+    return 1;
+
+}

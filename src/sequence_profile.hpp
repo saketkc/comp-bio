@@ -37,6 +37,11 @@ class ProfileMatrix{
         }
         ProfileMatrix(int rows, int columns);
         ~ProfileMatrix();
+        void deleteColumn(int i){
+            columns = columns-1;
+            delete [] P[i];
+
+        }
         void incrementCount(int row, int column){
             P[row][column]+=1;
 
@@ -53,6 +58,12 @@ class ProfileMatrix{
                     P[i][j]+=shift;
                 }
             }
+        }
+        int getRows(){
+            return rows;
+        }
+        int getColumns(){
+            return columns;
         }
 
 };

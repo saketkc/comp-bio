@@ -35,5 +35,7 @@ int main(int argc, char **argv){
     PM.shiftCountsUp();
     PM.print();
     int numberOfSequences = fasta_sequences.size();
+    PM.deleteColumn(1);
+    PM.print();
     return numberOfSequences;
 }
