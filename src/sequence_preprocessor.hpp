@@ -1,5 +1,6 @@
 #include "sequence_profile.hpp"
+using std::vector;
 
 bool isDNASequence(Fasta firstSequence);
-ProfileMatrix createProfileFromSequences(std::vector<Fasta> &fasta_sequences);
+vector<DistanceMatrix> createProfileFromSequences(std::vector<Fasta> &fasta_sequences);
 

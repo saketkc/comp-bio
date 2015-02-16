@@ -9,7 +9,7 @@ using std::vector;
 const char DNA[] = {'A', 'C', 'G', 'T', '_'};
 const char AA[] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'Y', 'V', '_'};
 
-class ProfileMatrix{
+class DistanceMatrix{
     //Rows correspnoding to 4+1 DNA bases
     //or 20+1 AA.
     //Columns correspond to individual sequence frequency
@@ -17,7 +17,7 @@ class ProfileMatrix{
     //Pointer to a pointer, since an array <=> pointer
     float **P;
     public:
-        void initProfileMatrix(){
+        void initDistanceMatrix(){
             // Pointer to pointer p is assigned to an array of integers
             P = new float*[rows];
             for (int i=0; i<rows; i++){
@@ -35,8 +35,8 @@ class ProfileMatrix{
                 std::cout << std::endl;
             }
         }
-        ProfileMatrix(int rows, int columns);
-        ~ProfileMatrix();
+        DistanceMatrix(int rows, int columns);
+        ~DistanceMatrix();
         void deleteColumn(int i){
             columns = columns-1;
             delete [] P[i];
