@@ -19,28 +19,33 @@ if (count>=5){
 return false;
 }
 
-vector<DistanceMatrix> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
+//vector<DistanceMatrix> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
+vector<Profile> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
     bool isDNA = isDNASequence(fasta_sequences[0]);
     //FIXME
-   std::cout <<"END: "<<isDNA;
-    unsigned int rows = sizeof(DNA);
+    unsigned int rows = 5;//izeof(DNA);
     unsigned int columns = fasta_sequences.size();
+   std::cout <<"END: "<<columns<<std::endl;
     const char *seqMap = DNA;
     std::string seq;
     if (!isDNA){
-        rows = sizeof(AA);//AA.size();
+        rows = 21;//AA.size();
         seqMap = AA;
     }
-
-   const char* end = seqMap + sizeof(seqMap) / sizeof(seqMap[0]);
-   std::cout <<"END: "<<end;
-   vector<DistanceMatrix> v;
-   for (unsigned int i=0; i<columns; i++){
+    //std::cout<<"SEQMAP: "<<std::begin(seqMap) << std::endl;
+   //const char* end = seqMap + sizeof(seqMap) / sizeof(seqMap[0]);
+   //std::cout <<"END: "<<end<<std::endl;
+    std::vector<DistanceMatrix> v;
+    for (unsigned int i=0; i<columns; i++){
         seq = fasta_sequences[i].get_seqString();
+        std::cout<<"LENGTH" << seq.length() << std::endl;
         DistanceMatrix SP = DistanceMatrix(rows, seq.length());
+        v.push_back(SP);
         for (unsigned int x=0; x<seq.length(); x++){
-            const char *p = std::find(seqMap, end, seq[x]);
-            if (p!=end){
+
+            const char *p = std::find(seqMap, seqMap+sizeof(seqMap), seq[x]);
+            std::cout<<" "<<seq[x]<<std::endl;
+            if (p!=seqMap+sizeof(seqMap)){
                 int dist = std::distance(seqMap, p);
                 SP.incrementCount(dist, x);
             }
@@ -49,7 +54,9 @@ vector<DistanceMatrix> createProfileFromSequences(std::vector<Fasta> &fasta_sequ
             }
 
         }
-    v.push_back(SP);
+       SP.print();
+       std::cout<<std::endl;
+       std::cout<<"FINE HERE"<<std::endl;
    }
    return v;
 }

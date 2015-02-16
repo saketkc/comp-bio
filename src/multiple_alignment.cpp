@@ -32,11 +32,12 @@ int main(int argc, char **argv){
     difference = endTime-startTime;
     std::cout <<  "[LOG] Loading sequences complete in: " << difference << " ms"<<std::endl;
     std::cout << "SIZE" << fasta_sequences.size();
-    vector<DistanceMatrix> PM = createProfileFromSequences(fasta_sequences);
+    //vector<DistanceMatrix> PM = createProfileFromSequences(fasta_sequences);
+    vector<Profile> PM = createProfileFromSequences(fasta_sequences);
     //PM.shiftCountsUp();
     // PM.print();
-    int numberOfSequences = fasta_sequences.size();
+    //int numberOfSequences = fasta_sequences.size();
     //PM.deleteColumn(1);
     //PM.print();
-    return numberOfSequences;
+    return 1;// numberOfSequences;
 }

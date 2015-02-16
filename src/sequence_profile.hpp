@@ -9,6 +9,15 @@ using std::vector;
 const char DNA[] = {'A', 'C', 'G', 'T', '_'};
 const char AA[] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'Y', 'V', '_'};
 
+class Profile{
+    public:
+    int seqNumber;
+    vector< vector<float> > profile;
+    Profile(int seqNumber, vector< vector<float> > profile){
+        seqNumber = seqNumber;
+        profile = profile;
+    }
+};
 class DistanceMatrix{
     //Rows correspnoding to 4+1 DNA bases
     //or 20+1 AA.
