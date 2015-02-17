@@ -9,13 +9,46 @@ using std::vector;
 const char DNA[] = {'A', 'C', 'G', 'T', '_'};
 const char AA[] = {'A', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'K', 'L', 'M', 'N', 'P', 'Q', 'R', 'S', 'T', 'W', 'Y', 'V', '_'};
 
+class ProfileAlignment{
+    public:
+    int seq1Length;
+    int seq2Length;
+    vector< vector<float> > scores;//(10000);//, vector<float> (seq2Length));
+    vector< vector<char> > type;//(1000);//seq1Length, vector<float> (seq2Length));
+    ProfileAlignment(int r, int c): seq1Length(r), seq2Length(c){
+                std::cout<<"I: "<<seq1Length<<std::endl;
+                std::cout<<std::endl;
+                std::cout<<"J: "<<seq2Length<<std::endl;
+                std::cout<<std::endl;
+                //scores.resize(seq1Length);
+                //type.resize(seq1Length);
+                //vector< vector<float> > scores(seq1Length, vector<float> (seq2Length));
+                //vector< vector<char> > type(seq1Length, vector<float> (seq2Length));
+
+        for (int i=0; i<seq1Length ;i++){
+                //scores[i].resize(seq2Length);
+                //type[i].resize(seq2Length);
+                vector<float> s;
+                vector<char> cc;
+
+            for(int j=0; j<seq2Length; j++){
+                //s.push_back(0);
+                //cc.push_back('M');
+                std::cout<<"I: "<<i<< " J: "<<j<<std::endl;
+            }
+            //scores.push_back(s);
+            //type.push_back(cc);
+        }
+    }
+};
+
 class Profile{
     public:
+    int rows;
+    int columns;
     int seqNumber;
     vector< vector<float> > profile;
-    Profile(int seqNumber, vector< vector<float> > profile){
-        seqNumber = seqNumber;
-        profile = profile;
+    Profile(int seqNumber, int rows, int cols, vector< vector<float> > profile): rows(rows), columns(cols), seqNumber(seqNumber), profile(profile) {
     }
 };
 class DistanceMatrix{

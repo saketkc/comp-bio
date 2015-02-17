@@ -34,6 +34,8 @@ int main(int argc, char **argv){
     std::cout << "SIZE" << fasta_sequences.size();
     //vector<DistanceMatrix> PM = createProfileFromSequences(fasta_sequences);
     vector<Profile> PM = createProfileFromSequences(fasta_sequences);
+    printProfile(PM);
+    ProfileAlignment P = calculatePairwiseAlignment(PM[0], PM[1]);
     //PM.shiftCountsUp();
     // PM.print();
     //int numberOfSequences = fasta_sequences.size();
