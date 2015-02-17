@@ -15,7 +15,7 @@ class ProfileAlignment{
     int seq2Length;
     vector< vector<float> > scores;//(10000);//, vector<float> (seq2Length));
     vector< vector<char> > type;//(1000);//seq1Length, vector<float> (seq2Length));
-    ProfileAlignment(int r, int c): seq1Length(r), seq2Length(c){
+    ProfileAlignment(int r, int c): seq1Length(r+1), seq2Length(c+1){
                 //std::cout<<"I: "<<seq1Length<<std::endl;
                 //std::cout<<std::endl;
                 //std::cout<<"J: "<<seq2Length<<std::endl;
@@ -33,11 +33,23 @@ class ProfileAlignment{
 
             for(int j=0; j<seq2Length; j++){
                 s.push_back(0);
-                cc.push_back('M');
+                if(i!=0)
+                    cc.push_back('X');
+                else {
+                    cc.push_back('1');
+                }
                 //std::cout<<"I: "<<i<< " J: "<<j<<std::endl;
             }
             scores.push_back(s);
             type.push_back(cc);
+            type[i][0]='2';
+        }
+        scores[0][0]=0;
+        for(int i=0;i<seq1Length;i++){
+            scores[i][0]=2*i;
+        }
+        for(int j=0;j<seq2Length; j++){
+            scores[0][j]=2*j;
         }
         for (int i=0; i<seq1Length ;i++){
             for(int j=0; j<seq2Length; j++){

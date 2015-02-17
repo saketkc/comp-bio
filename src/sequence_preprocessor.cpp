@@ -23,12 +23,12 @@ return false;
 vector<Profile> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
     bool isDNA = isDNASequence(fasta_sequences[0]);
     //FIXME
-    unsigned int rows = 5;//izeof(DNA);
-    unsigned int count = fasta_sequences.size();
+    unsigned int count = 5;//izeof(DNA);
+    unsigned int rows = fasta_sequences.size();
     const char *seqMap = DNA;
     std::string seq;
     if (!isDNA){
-        rows = 21;//AA.size();
+        count = 21;//AA.size();
         seqMap = AA;
     }
     //std::cout<<"SEQMAP: "<<std::begin(seqMap) << std::endl;
@@ -36,34 +36,27 @@ vector<Profile> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
    //std::cout <<"END: "<<end<<std::endl;
     //std::vector<DistanceMatrix> v;
     std::vector<Profile> v;
-
-    for (unsigned int i=0; i<count; i++){
+    for(int i=0;i<rows;i++){
         seq = fasta_sequences[i].get_seqString();
-        //std::cout<<"LENGTH" << seq.length() << std::endl;
-        //DistanceMatrix SP = DistanceMatrix(rows, seq.length());
-        vector< vector<float> > score(rows, vector<float> (seq.length()));
-        for (unsigned int x=0; x<seq.length(); x++){
-
-            const char *p = std::find(seqMap, seqMap+sizeof(seqMap), seq[x]);
-            //std::cout<<" "<<seq[x]<<std::endl;
-            if (p!=seqMap+sizeof(seqMap)){
-                int dist = std::distance(seqMap, p);
-                //SP.incrementCount(dist, x);
-                score[dist][x]=1;
+        vector< vector<float> > score(seq.length(), vector<float> (rows));
+        for (unsigned int j=0; j<seq.length(); j++){
+            for (unsigned int x=0; x<count; x++){
+                const char *p = std::find(seqMap, seqMap+sizeof(seqMap), seq[j]);
+                if (p!=seqMap+sizeof(seqMap)){
+                    int dist = std::distance(seqMap, p);
+                    //SP.incrementCount(dist, x);
+                    score[j][dist]=1;
+                }
+                else{
+                    std::cout << "[Error]:: Found" << seq[i]<<std::endl;
+                }
             }
-            else{
-                std::cout << "[Error]:: Found" << seq[x]<<std::endl;
-            }
-
         }
-        //std::cout<<"rows "<<rows<<std::endl;
-        //std::cout<<"i "<<i<<std::endl;
-        string seq = fasta_sequences[i].get_seqString();
-        Profile profile(i, rows, seq.length(), score, seq);
-        profile.columns = seq.length();
-        //std::cout<<"name: "<<profile.seqNumber<<std::endl;
+        vector<string> alignment;
+        alignment.push_back(seq); //Alignment is same for sequences as
+        Profile profile(i, seq.length(), count, score, seq, alignment);
         v.push_back(profile);
-   }
+    }
    return v;
 }
 
@@ -101,67 +94,27 @@ float calculateHammingDistance(Profile &p1, Profile &p2){
         }
     }
     distance = distance+2*(maxColumns-minColumns);
-    std::cout<<"Seq1 "<<p1.sequence<<std::endl;
-    std::cout<<"Seq2 "<<p2.sequence<<std::endl;
-    std::cout<<"Seq1 L "<<p1.columns<<std::endl;
-    std::cout<<"Seq2 L "<<p2.columns<<std::endl;
-    std::cout<<"Distance "<<distance<<std::endl;
-    std::cout<<"XXX: "<<(distance*1.0/comparisons)<<std::endl;
+//    std::cout<<"Seq1 "<<p1.sequence<<std::endl;
+//    std::cout<<"Seq2 "<<p2.sequence<<std::endl;
+//    std::cout<<"Seq1 L "<<p1.columns<<std::endl;
+//    std::cout<<"Seq2 L "<<p2.columns<<std::endl;
+//    std::cout<<"Distance "<<distance<<std::endl;
+//    std::cout<<"XXX: "<<(distance*1.0/comparisons)<<std::endl;
     return distance*1.0/comparisons;
 }
 
-void backtracer(ProfileAlignment &P,) {
-
-    int seq1_length = P.seq1Length-1;
-    int seq2_length = P.seq2Length-1;
-    //std::cout<<"seq1 PP: "<<seq1_length<<std::endl;
-    //std::cout<<"seq2 PP: "<<seq2_length<<std::endl;
-    vector<string> output;
-    //The first sequence is
-    std::string seq1Output = "";
-    std::string seq2Output = "";
-    int score;
-    char type='X';
-    while (seq1_length > 0  || seq2_length > 0 ){
-        score  = P.scores[seq1_length][seq2_length];
-    std::cout<<"seq1 L: "<<seq1_length<<std::endl;
-    std::cout<<"seq2 L: "<<seq2_length<<std::endl;
-        if(type=='M'){
-            seq1Output = seq1[seq1_length] + seq1Output;
-            seq2Output = seq2[seq2_length] + seq2Output;
-            seq1_length = seq1_length - 1;
-            seq2_length = seq2_length - 1;
-        }
-        else if (type=='2'){
-            seq1Output = seq1[seq1_length] + seq1Output;
-            seq2Output = "-" + seq2Output;
-            seq1_length = seq1_length - 1;
-        }
-        else if (type=='1'){
-            seq1Output = "-" + seq1Output;
-            seq2Output = seq2[seq2_length] + seq2Output;
-            seq2_length = seq2_length - 1;
-        }
-        else{
-
-            std::cerr << "Unknown score. Exiting since this is surely a bug! "  << type << " score: " << score <<  std::endl;
-            exit(EXIT_FAILURE);
-        }
-    }
-
-    output.push_back(seq1Output);
-    output.push_back(seq2Output);
-    return output;
-
-}
 Profile performAlignment(vector<Profile> &P, int &minX, int &minY){
 
     int cols1 = P[minX].columns;
     int cols2 = P[minY].columns;
     Profile seq1Profile = P[minX];
     Profile seq2Profile = P[minY];
-    ProfileAlignment P(cols1, cols2);
+    ProfileAlignment PA(cols1, cols2);
     int s=0;
+    int del1=0;
+    int del2=0;
+    char type='M';
+    float min=32000;
     for(int i=1; i<cols1; i++){
         for(int j=1; j<cols2; j++){
             int s = 0;
@@ -185,58 +138,34 @@ Profile performAlignment(vector<Profile> &P, int &minX, int &minY){
                     }
                 }
             }
-            min = P.scores[i-1][j-1] + s;
-            del1 = P.scores[i-1][j] + 2;
-            del2 = P.scores[i][j-1] + 2;
+            min = PA.scores[i-1][j-1] + s;
+            del1 = PA.scores[i-1][j] + 2;
+            del2 = PA.scores[i][j-1] + 2;
             (min > del2) && (min = del2) && (type='2');
             (min > del1) && (min = del1) && (type='1');
-            P.type[i][j] = type;
-            P.scores[i][j] = min;
+            PA.type[i][j] = type;
+            PA.scores[i][j] = min;
         }
     }
     //Bakctracing
     //
-}
-void ProfileAligner(vector<Profile> &P){
-    while(P.size()>1){
-        DistanceMatrix DM = calculateDistanceMatrix(P);
-        int minX = -1;
-        int minY = -1;
-        float minDist = 332000;
-
-        for(unsigned int i=0; i<DM.getRows(); i++){
-            for(unsigned int j=0; j<DM.getColumns(); j++){
-                if(i!=j && DM.getValue(i,j)<min_dist){
-                    minDist = DM.getValue(i, j);
-                    minX = i;
-                    minY = j;
-                }
-            }
-        }
-
-        Profile new_profile = performAlignment(P, minX, minY);
-        //Delete row column X
-        P.erase(P.begin()+minX);
-        if(minX<minY):
-            minY=minY-1
-        //Delete row,column Y
-        P.erase(P.begin()+minY);
-        P.push_back(new_profile);
-
-    }
 
 }
-
+float calculatePairwiseDistance(Profile &seq1Profile, Profile &seq2Profile){
+    float tot = 0;
+    float numComparisons = seq1Profile.columns*seq2Profile.columns;
+}
 DistanceMatrix calculateDistanceMatrix(vector<Profile> &P){
     DistanceMatrix DM(P.size(), P.size());
     float dist;
     for (unsigned int i=0; i<P.size(); i++){
         for (unsigned int j=0; j<P.size(); j++){
             dist = calculateHammingDistance(P[i], P[j]);
-            std::cout<<"YOOOOO: "<<dist<<std::endl;
+            //std::cout<<"YOOOOO: "<<dist<<std::endl;
             DM.edit(i,j, dist);
         }
     }
+    std::cout<<"DistanceMatrix "<<std::endl;
     for (unsigned int i=0; i<P.size(); i++){
         std::cout<<std::endl;
         for (unsigned int j=0; j<P.size(); j++){
@@ -303,13 +232,76 @@ ProfileAlignment calculatePairwiseAlignment(Profile &seq1Profile, Profile &seq2P
             std::cout<<P.type[i][j]<< " ";
         }
     }
+    std::cout<<std::endl<<"DDDDD"<<std::endl;
     return P;
 }
 
+
+long optimizer(vector<float> seq1score, vector<float> seq2score, int max){
+    float s=0;
+    int aln1Size = seq1score.size();
+    int aln2Size = seq2score.size();
+    for(unsigned int i=0;i<aln1Size; i++){
+        for(unsigned int j=0;j<aln2Size;j++){
+            if(i==max || j==max){
+                s=s+2*(seq1score[i]*seq2score[j]);
+            }
+            else if(i==j){
+                s=s+0*seq1score[i]*seq2score[j];
+            }
+            else{
+                s=s+1*(seq1score[i]*seq2score[j]);
+            }
+        }
+    }
+    return s;
+}
+
+Profile aligner(vector<Profile> &Profiles, int minX, int minY){
+    int aln1Size = Profiles[minX].alignment[0].size()+1;
+    int aln2Size = Profiles[minY].alignment[0].size()+1;
+    int columns = Profiles[0].columns;
+    int del1;
+    int del2;
+    vector<float> indelP;
+    for(int k=0;k<columns;k++){
+        indelP.push_back(0);
+    }
+    indelP.push_back(1);
+    ProfileAlignment M(aln1Size, aln2Size);
+    M.scores[0][0]=0;
+    M.type[0][0]='X';
+    for (int j=1;j<aln2Size;j++){
+        M.scores[0][j] = M.scores[0][j-1] + optimizer(Profiles[minY].profile[j-1], indelP, columns);
+        M.type[0][j] = '1';
+    }
+    for (int i=1;i<aln1Size;i++){
+        M.scores[i][0] = M.scores[i-1][0] + optimizer(Profiles[minX].profile[i-1], indelP, columns);
+        M.type[i][0] = '2';
+        char type;
+        int min=0;
+
+        for (int j=1;j<aln2Size;j++){
+            min = M.scores[i-1][j-1] + optimizer(Profiles[minX].profile[i-1], Profiles[minY].profile[j-1], columns);
+            del1 = M.scores[i-1][j] + optimizer(Profiles[minX].profile[i-1], indelP, columns);
+            del2 = M.scores[i][j-1] + optimizer(indelP, Profiles[minY].profile[j-1], columns);
+            (min > del2) && (min = del2) && (type='2');
+            (min > del1) && (min = del1) && (type='1');
+            M.type[i][j] = type;
+            M.scores[i][j] = min;
+        }
+
+    }
+
+    return Profiles[0];
+
+}
+
+
 vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, string &seq2){
 
-    int seq1_length = P.seq1Length-1;
-    int seq2_length = P.seq2Length-1;
+    int seq1_length = P.seq1Length-2;
+    int seq2_length = P.seq2Length-2;
     //std::cout<<"seq1 PP: "<<seq1_length<<std::endl;
     //std::cout<<"seq2 PP: "<<seq2_length<<std::endl;
     vector<string> output;
@@ -317,10 +309,17 @@ vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, stri
     std::string seq2Output = "";
     int score;
     char type='X';
-    while (seq1_length > 0  || seq2_length > 0 ){
-        score  = P.scores[seq1_length][seq2_length];
     std::cout<<"seq1 L: "<<seq1_length<<std::endl;
     std::cout<<"seq2 L: "<<seq2_length<<std::endl;
+
+    std::cout<<"seq1 : "<<seq1<<std::endl;
+    std::cout<<"seq2 : "<<seq2<<std::endl;
+    while (seq1_length > 0  || seq2_length > 0 ){
+        score  = P.scores[seq1_length][seq2_length];
+        type = P.type[seq1_length][seq2_length];
+    std::cout<<"seq1 L: "<<seq1_length<<std::endl;
+    std::cout<<"seq2 L: "<<seq2_length<<std::endl;
+
         if(type=='M'){
             seq1Output = seq1[seq1_length] + seq1Output;
             seq2Output = seq2[seq2_length] + seq2Output;
@@ -340,12 +339,46 @@ vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, stri
         else{
 
             std::cerr << "Unknown score. Exiting since this is surely a bug! "  << type << " score: " << score <<  std::endl;
-            exit(EXIT_FAILURE);
+            std::cerr<<" Seq1: " << seq1_length << " seq2_length: " << seq2_length<<std::endl;
+            //exit(EXIT_FAILURE);
         }
+    std::cout<<"seq1 : "<<seq1Output<<std::endl;
+    std::cout<<"seq2 : "<<seq2Output<<std::endl;
+
     }
 
     output.push_back(seq1Output);
     output.push_back(seq2Output);
     return output;
+}
+
+void ProfileAligner(vector<Profile> &P){
+    while(P.size()>1){
+        DistanceMatrix DM = calculateDistanceMatrix(P);
+        int minX = -1;
+        int minY = -1;
+        float minDist = 332000;
+
+        for(int i=0; i<DM.getRows(); i++){
+            for(int j=0; j<DM.getColumns(); j++){
+                if(i!=j && DM.getValue(i,j)<minDist){
+                    minDist = DM.getValue(i, j);
+                    minX = i;
+                    minY = j;
+                }
+            }
+        }
+
+        Profile new_profile = aligner(P, minX, minY);
+        //Delete row column X
+        P.erase(P.begin()+minX);
+        if(minX<minY)
+            minY=minY-1;
+        //Delete row,column Y
+        P.erase(P.begin()+minY);
+        P.push_back(new_profile);
+
+    }
+
 }
 

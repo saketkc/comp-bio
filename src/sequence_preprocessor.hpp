@@ -11,3 +11,4 @@ vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, stri
 DistanceMatrix calculateDistanceMatrix(vector<Profile> &P);
 float calculateHammingDistance(Profile &p1, Profile &p2);
 void ProfileAligner(vector<Profile> &P);
+Profile aligner(vector<Profile> &Profiles, int minX, int minY);
