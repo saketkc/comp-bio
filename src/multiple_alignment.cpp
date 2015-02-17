@@ -30,12 +30,25 @@ int main(int argc, char **argv){
     fasta_sequences = FastaReader(argv[1]);
     endTime = getTimeinMilliSeconds();
     difference = endTime-startTime;
-    std::cout <<  "[LOG] Loading sequences complete in: " << difference << " ms"<<std::endl;
-    std::cout << "SIZE" << fasta_sequences.size();
+    //std::cout <<  "[LOG] Loading sequences complete in: " << difference << " ms"<<std::endl;
     //vector<DistanceMatrix> PM = createProfileFromSequences(fasta_sequences);
     vector<Profile> PM = createProfileFromSequences(fasta_sequences);
-    printProfile(PM);
-    ProfileAlignment P = calculatePairwiseAlignment(PM[0], PM[1]);
+    //printProfile(PM);
+    DistanceMatrix DM = calculateDistanceMatrix(PM);
+    //cout.precision (15);
+    for (unsigned int i=0; i<DM.getRows(); i++){
+        std::cout<<std::endl;
+        for (unsigned int j=0; j<DM.getColumns(); j++){
+            std::cout<<DM.getValue(i,j)<<" ";
+        }
+    }
+    //DM.print();
+    std::cout<<std::endl;
+    //ProfileAlignment P = calculatePairwiseAlignment(PM[1], PM[0]);
+    string seq1 = fasta_sequences[0].get_seqString();
+    string seq2 = fasta_sequences[1].get_seqString();
+    //std::cout <<  "[LOG] Loading sequences complete in: " << difference << " ms"<<std::endl;
+   // vector<string> x =  getOptimalProfileAlignment(P, seq1, seq2);
     //PM.shiftCountsUp();
     // PM.print();
     //int numberOfSequences = fasta_sequences.size();

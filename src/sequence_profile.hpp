@@ -16,10 +16,10 @@ class ProfileAlignment{
     vector< vector<float> > scores;//(10000);//, vector<float> (seq2Length));
     vector< vector<char> > type;//(1000);//seq1Length, vector<float> (seq2Length));
     ProfileAlignment(int r, int c): seq1Length(r), seq2Length(c){
-                std::cout<<"I: "<<seq1Length<<std::endl;
-                std::cout<<std::endl;
-                std::cout<<"J: "<<seq2Length<<std::endl;
-                std::cout<<std::endl;
+                //std::cout<<"I: "<<seq1Length<<std::endl;
+                //std::cout<<std::endl;
+                //std::cout<<"J: "<<seq2Length<<std::endl;
+                //std::cout<<std::endl;
                 //scores.resize(seq1Length);
                 //type.resize(seq1Length);
                 //vector< vector<float> > scores(seq1Length, vector<float> (seq2Length));
@@ -32,12 +32,18 @@ class ProfileAlignment{
                 vector<char> cc;
 
             for(int j=0; j<seq2Length; j++){
-                //s.push_back(0);
-                //cc.push_back('M');
-                std::cout<<"I: "<<i<< " J: "<<j<<std::endl;
+                s.push_back(0);
+                cc.push_back('M');
+                //std::cout<<"I: "<<i<< " J: "<<j<<std::endl;
             }
-            //scores.push_back(s);
-            //type.push_back(cc);
+            scores.push_back(s);
+            type.push_back(cc);
+        }
+        for (int i=0; i<seq1Length ;i++){
+            for(int j=0; j<seq2Length; j++){
+                std::cout<<scores[i][j]<< " ";
+            }
+            std::cout<<std::endl;
         }
     }
 };
@@ -48,7 +54,10 @@ class Profile{
     int columns;
     int seqNumber;
     vector< vector<float> > profile;
-    Profile(int seqNumber, int rows, int cols, vector< vector<float> > profile): rows(rows), columns(cols), seqNumber(seqNumber), profile(profile) {
+    string sequence;
+    vector<string> alignment;
+    Profile(int seqNumber, int rows, int cols, vector< vector<float> > profile, string sequence, vector<string> alignment): rows(rows),
+    columns(cols), seqNumber(seqNumber), profile(profile), sequence(sequence), alignment(alignment) {
     }
 };
 class DistanceMatrix{
@@ -69,6 +78,9 @@ class DistanceMatrix{
                 }
             }
         }
+        void edit(int i, int j, float value){
+            P[i][j] = value;
+        }
         void print(){
             for (int i=0; i<rows; i++){
                 for (int j=0;j<columns;j++){
@@ -88,6 +100,9 @@ class DistanceMatrix{
             P[row][column]+=1;
 
         }
+       float getValue(int i,int j){
+           return P[i][j];
+       }
         void shiftCountsUp(){
             //If rows are 5 shift by 1/4
             //Else shift by 1/20

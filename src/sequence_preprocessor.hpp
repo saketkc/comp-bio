@@ -8,3 +8,6 @@ void printProfile(std::vector<Profile> &PM);
 ProfileAlignment calculatePairwiseAlignment(Profile &seq1Profile, Profile &seq2Profile);
 vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, string &seq2);
 
+DistanceMatrix calculateDistanceMatrix(vector<Profile> &P);
+float calculateHammingDistance(Profile &p1, Profile &p2);
+void ProfileAligner(vector<Profile> &P);
