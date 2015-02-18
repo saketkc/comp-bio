@@ -15,7 +15,21 @@ class ProfileAlignment{
     int seq2Length;
     vector< vector<float> > scores;//(10000);//, vector<float> (seq2Length));
     vector< vector<char> > type;//(1000);//seq1Length, vector<float> (seq2Length));
-    ProfileAlignment(int r, int c): seq1Length(r+1), seq2Length(c+1){
+    void print(){
+        for (int i=0; i<seq1Length ;i++){
+            for(int j=0; j<seq2Length; j++){
+                std::cout<<scores[i][j]<< " ";
+            }
+            std::cout<<std::endl;
+        }
+        for (int i=0; i<seq1Length ;i++){
+            for(int j=0; j<seq2Length; j++){
+                std::cout<<type[i][j]<< " ";
+            }
+            std::cout<<std::endl;
+        }
+    }
+    ProfileAlignment(int r, int c): seq1Length(r), seq2Length(c){
                 //std::cout<<"I: "<<seq1Length<<std::endl;
                 //std::cout<<std::endl;
                 //std::cout<<"J: "<<seq2Length<<std::endl;
@@ -51,12 +65,7 @@ class ProfileAlignment{
         for(int j=0;j<seq2Length; j++){
             scores[0][j]=2*j;
         }
-        for (int i=0; i<seq1Length ;i++){
-            for(int j=0; j<seq2Length; j++){
-                std::cout<<scores[i][j]<< " ";
-            }
-            std::cout<<std::endl;
-        }
+
     }
 };
 
@@ -64,12 +73,12 @@ class Profile{
     public:
     int rows;
     int columns;
-    int seqNumber;
+    string seqName;
     vector< vector<float> > profile;
     string sequence;
     vector<string> alignment;
-    Profile(int seqNumber, int rows, int cols, vector< vector<float> > profile, string sequence, vector<string> alignment): rows(rows),
-    columns(cols), seqNumber(seqNumber), profile(profile), sequence(sequence), alignment(alignment) {
+    Profile(string seqName, int rows, int cols, vector< vector<float> > profile, string sequence, vector<string> alignment): rows(rows),
+    columns(cols), seqName(seqName), profile(profile), sequence(sequence), alignment(alignment) {
     }
 };
 class DistanceMatrix{

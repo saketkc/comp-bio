@@ -54,7 +54,7 @@ vector<Profile> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
         }
         vector<string> alignment;
         alignment.push_back(seq); //Alignment is same for sequences as
-        Profile profile(i, seq.length(), count, score, seq, alignment);
+        Profile profile(fasta_sequences[i].seqName, seq.length(), count, score, seq, alignment);
         v.push_back(profile);
     }
    return v;
@@ -63,7 +63,7 @@ vector<Profile> createProfileFromSequences(std::vector<Fasta> &fasta_sequences){
 void printProfile(vector<Profile> &profiles){
     //std::cout<< "Profiles: "<<profiles.size();
     for (unsigned int i=0;i<profiles.size();i++){
-        std::cout<<"profile: "<<profiles[i].seqNumber<<std::endl;
+        std::cout<<"profile: "<<profiles[i].seqName<<std::endl;
         for(int x=0;x<profiles[i].rows ; x++){
             for(int y=0; y<profiles[i].columns; y++){
                 std::cout<<profiles[i].profile[x][y]<<" ";
@@ -150,10 +150,6 @@ Profile performAlignment(vector<Profile> &P, int &minX, int &minY){
     //Bakctracing
     //
 
-}
-float calculatePairwiseDistance(Profile &seq1Profile, Profile &seq2Profile){
-    float tot = 0;
-    float numComparisons = seq1Profile.columns*seq2Profile.columns;
 }
 DistanceMatrix calculateDistanceMatrix(vector<Profile> &P){
     DistanceMatrix DM(P.size(), P.size());
@@ -257,6 +253,77 @@ long optimizer(vector<float> seq1score, vector<float> seq2score, int max){
     return s;
 }
 
+vector<string> mergeProfiles(vector<string> &seq1Alignment, vector<string> &seq2Alignment, ProfileAlignment M){
+    int seq1Size = seq1Alignment[0].size();
+    int seq2Size = seq2Alignment[0].size();
+
+    vector<string> aln1(seq1Alignment.size());
+    vector<string> aln2(seq2Alignment.size());
+    std::cout<<"Loimit x:"<<M.seq1Length;
+   std::cout<<std::endl;
+    std::cout<<"Loimit y:"<<M.seq2Length;
+ //   std::cout<<std::endl;
+ //  std::cout<<"Loimit x:"<<seq1Alignment.size();
+   //std::cout<<std::endl;
+   //std::cout<<"Loimit y:"<<seq2Alignment.size();
+   std::cout<<std::endl;
+    M.print();
+    while (seq1Size >0 || seq2Size > 0){
+        std::cout<<"Se1 Aln size: "<<seq1Size<<std::endl;
+        std::cout<<"Se2 Aln size: "<<seq2Size<<std::endl;
+        if(M.type[seq1Size][seq2Size]=='M'){
+            std::cout<<"CHECK: M"<<std::endl;
+            for(unsigned int i=0; i<seq1Alignment.size(); i++){
+                aln1[i].append(seq1Alignment[i].substr(seq1Size-1,1));
+            }
+            for(unsigned int j=0; j<seq2Alignment.size(); j++){
+                aln2[j].append(seq2Alignment[j].substr(seq2Size-1,1));
+            }
+            --seq1Size;
+            --seq2Size;
+        }
+        else if(M.type[seq1Size][seq2Size]=='2'){
+            std::cout<<"CHECK: 2"<<std::endl;
+            for(unsigned int i=0; i<seq1Alignment.size(); i++){
+                aln1[i].append(seq1Alignment[i].substr(seq1Size-1,1));
+            }
+            for(unsigned int j=0; j<seq2Alignment.size(); j++){
+                aln2[j].append("-");
+            }
+            --seq2Size;
+        }
+        else if(M.type[seq1Size][seq2Size]=='1'){
+
+            std::cout<<"CHECK: 1"<<std::endl;
+            for(unsigned int i=0; i<seq1Alignment.size(); i++){
+                aln1[i].append("-");
+            }
+            for(unsigned int j=0; j<seq2Alignment.size(); j++){
+                aln2[j].append(seq2Alignment[j].substr(seq2Size-1,1));
+            }
+            --seq1Size;
+        }
+        else {
+            std::cout<<"ERRRRRRRRRRRRRRRRRRRR: "<<M.type[seq1Size][seq2Size]<<std::endl;
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    for(int i=0;i<aln1.size();i++){
+        reverse(aln1[i].begin(), aln1[i].end());
+    }
+    for(int j=0;j<aln2.size();j++){
+        reverse(aln2[j].begin(), aln2[j].end());
+    }
+    vector<string> merged;
+    for (unsigned int i=0;i<aln1.size();i++){
+        merged.push_back(aln1[i]);
+    }
+    for (unsigned int i=0;i<aln2.size();i++){
+        merged.push_back(aln2[i]);
+    }
+    return merged;
+}
 Profile aligner(vector<Profile> &Profiles, int minX, int minY){
     int aln1Size = Profiles[minX].alignment[0].size()+1;
     int aln2Size = Profiles[minY].alignment[0].size()+1;
@@ -278,22 +345,53 @@ Profile aligner(vector<Profile> &Profiles, int minX, int minY){
     for (int i=1;i<aln1Size;i++){
         M.scores[i][0] = M.scores[i-1][0] + optimizer(Profiles[minX].profile[i-1], indelP, columns);
         M.type[i][0] = '2';
-        char type;
+        char type='M';
         int min=0;
 
         for (int j=1;j<aln2Size;j++){
             min = M.scores[i-1][j-1] + optimizer(Profiles[minX].profile[i-1], Profiles[minY].profile[j-1], columns);
             del1 = M.scores[i-1][j] + optimizer(Profiles[minX].profile[i-1], indelP, columns);
             del2 = M.scores[i][j-1] + optimizer(indelP, Profiles[minY].profile[j-1], columns);
-            (min > del2) && (min = del2) && (type='2');
-            (min > del1) && (min = del1) && (type='1');
+            (min > del2) && (min = del2) && (type='1');
+            (min > del1) && (min = del1) && (type='2');
             M.type[i][j] = type;
             M.scores[i][j] = min;
         }
 
     }
-
-    return Profiles[0];
+    std::cout<<"Starting merging profiles"<<std::endl;
+    vector<string> mergedA = mergeProfiles(Profiles[minX].alignment, Profiles[minY].alignment, M);
+    std::cout<<"Completed merging profiles"<<std::endl;
+    vector< vector<float> > mergedScore(mergedA[0].length(), vector<float> (columns));
+    const char *seqMap = DNA;
+    if (columns==21){
+        seqMap = AA;
+    }
+    for (unsigned int i=0; i<mergedA[0].size(); i++){
+        for (unsigned int j=0; j<mergedA.size(); j++){
+            //string seq = mergedA[j][i];
+            for (unsigned int x=0; x<columns; x++){
+                const char *p = std::find(seqMap, seqMap+sizeof(seqMap), mergedA[j][i]);
+                if (p!=seqMap+sizeof(seqMap)){
+                    int dist = std::distance(seqMap, p);
+                    //SP.incrementCount(dist, x);
+                    mergedScore[i][dist]=1;
+                }
+                else{
+                    //std::cout << "[Error]:: Found" << seq[i]<<std::endl;
+                    std::cout<<"ERROR"<<std::endl;
+                }
+            }
+        }
+    }
+    int total = mergedA.size();
+    for (int i=0;i<mergedScore.size();i++){
+        for(int j=0; j<mergedScore[i].size();j++){
+            mergedScore[i][j]/=total;
+        }
+    }
+    Profile MP("test", total, columns, mergedScore, "ddsd", mergedA);
+    return MP;
 
 }
 
@@ -351,8 +449,8 @@ vector<string> getOptimalProfileAlignment(ProfileAlignment P, string &seq1, stri
     output.push_back(seq2Output);
     return output;
 }
-
 void ProfileAligner(vector<Profile> &P){
+    int size = P.size();
     while(P.size()>1){
         DistanceMatrix DM = calculateDistanceMatrix(P);
         int minX = -1;
@@ -377,8 +475,10 @@ void ProfileAligner(vector<Profile> &P){
         //Delete row,column Y
         P.erase(P.begin()+minY);
         P.push_back(new_profile);
-
     }
 
+    for(unsigned int i=0;i<size; i++){
+        std::cout<<P[0].alignment[i]<<std::endl;
+    }
 }
 
