@@ -16,12 +16,14 @@ class ProfileAlignment{
     vector< vector<float> > scores;//(10000);//, vector<float> (seq2Length));
     vector< vector<char> > type;//(1000);//seq1Length, vector<float> (seq2Length));
     void print(){
+        std::cout<<"Scoring Matrix:"<<std::endl;
         for (int i=0; i<seq1Length ;i++){
             for(int j=0; j<seq2Length; j++){
                 std::cout<<scores[i][j]<< " ";
             }
             std::cout<<std::endl;
         }
+        std::cout<<std::endl<<"Type Matrix:"<<std::endl;
         for (int i=0; i<seq1Length ;i++){
             for(int j=0; j<seq2Length; j++){
                 std::cout<<type[i][j]<< " ";
@@ -73,11 +75,11 @@ class Profile{
     public:
     int rows;
     int columns;
-    string seqName;
+    vector<string> seqName;
     vector< vector<float> > profile;
     string sequence;
     vector<string> alignment;
-    Profile(string seqName, int rows, int cols, vector< vector<float> > profile, string sequence, vector<string> alignment): rows(rows),
+    Profile(vector<string> seqName, int rows, int cols, vector< vector<float> > profile, string sequence, vector<string> alignment): rows(rows),
     columns(cols), seqName(seqName), profile(profile), sequence(sequence), alignment(alignment) {
     }
 };
