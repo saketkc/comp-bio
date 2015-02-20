@@ -5,7 +5,8 @@
 ## Implemented Algorithms:
 
 - Global Alignment: [Documentation](docs/GlobalAlignment.md)
-
+- KBand Alignment: [Documentation](docs/K_Banded_Alignment.md)
+= Multiple Sequence Alignment
 
 ## How to run?
 ```
