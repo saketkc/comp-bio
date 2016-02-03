@@ -2,11 +2,13 @@
 
 ## Build Status [![Build Status](https://travis-ci.org/saketkc/comp-bio.svg)](https://travis-ci.org/saketkc/comp-bio)
 
+These were implemented as part of the `MATH578A: Introduction to Computational Biology` course at USC.
+
 ## Implemented Algorithms:
 
 - Global Alignment: [Documentation](docs/GlobalAlignment.md)
 - KBand Alignment: [Documentation](docs/K_Banded_Alignment.md)
-= Multiple Sequence Alignment
+- Multiple Sequence Alignment
 
 ## How to run?
 ```
